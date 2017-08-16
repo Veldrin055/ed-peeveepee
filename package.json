@@ -1,0 +1,21 @@
+{
+  "name": "PvPTracker",
+  "version": "1.0.0",
+  "description": "East India Company employee app",
+  "main": "./main.js",
+  "scripts": {
+    "start": "electron .",
+    "package": "electron-packager ./ PvPTracker --all --out ~/Desktop/PvpTracker --version 1.6.11 --overwrite --icon=./app/img/app-icon.icns",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Daniel Morrison",
+  "license": "ISC",
+  "dependencies": {
+    "chokidar": "^1.7.0",
+    "nconf": "^0.8.4",
+    "tail": "^1.2.2"
+  },
+  "devDependencies": {
+    "electron-packager": "^8.7.2"
+  }
+}

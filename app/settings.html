@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="css/spectre.css"/>
+    <link rel="stylesheet" href="css/spectre-icons.css"/>
+    <link rel="stylesheet" href="css/spectre-exp.css"/>
+</head>
+<body>
+<div class="rounded w3-theme-dark window shadow-4">
+    <div class="content">
+        <h5>Settings</h5>
+        <form id="settingsForm">
+            <div class="container">
+                <div class="columns">
+                    <div class="column col-9 col-xs-12">
+                        <div class="form-group">
+                            <label class="form-label" for="journalFileLocation">Journal directory</label>
+                            <input class="form-input disabled" type="text" id="journalFileLocation" placeholder="Your journal location">
+                            <button class="btn ">Choose file...</button>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-switch">
+                                <input id="soundOn" type="checkbox"/>
+                                <i class="form-icon"></i>
+                                Enable sound on kill
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="volume">
+                                Volume
+                            </label>
+                            <input id="volume" type="range" class="slider" min="0" max="100"/>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-primary" type="submit">Save & Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="js/settings.js"></script>
+</body>
+</html>
