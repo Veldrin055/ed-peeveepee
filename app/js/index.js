@@ -15,7 +15,8 @@ var Cmdr = function() {
         totalDeaths: 0,
         eventLog: [],
         name: "mystery",
-        location: "unknown"
+        location: "unknown",
+        body: "unknown"
     };
 };
 
@@ -39,11 +40,11 @@ ipcRenderer.on('name', (events, message) => {
 });
 
 ipcRenderer.on('location', (events, message) => {
-    CMDR.location = message;
+    CMDR.location = message.starSystem;
+    CMDR.body = message.body;
 });
 
 function resizeTable() {
-// Change the selector if needed
     var $table = $('table'),
         $bodyCells = $table.find('tbody tr:first').children(),
         colWidth;
@@ -76,23 +77,36 @@ function headToHeadEvent(cmdrName) {
     }));
 
     modal.once('ready-to-show', () => {
+        document.body.classList.toggle('overlay', true);
         modal.webContents.send('head-to-head', headToHead(cmdrName));
         modal.show();
-    })
+    });
+
+    modal.on('closed', () => document.body.classList.toggle('overlay', false));
 }
 
-function calculateKDR (cmdr) {
+function calculateKDR (cmdr, el) {
+    var kdr;
     if (cmdr.totalDeaths == 0) {
-        return 'Undefeated'
+        kdr = 'Undefeated'
+    } else {
+        kdr = parseFloat(Math.round(cmdr.totalKills / cmdr.totalDeaths)).toFixed(2);
     }
-    return parseFloat(Math.round(cmdr.totalKills / cmdr.totalDeaths)).toFixed(2);
+    el.textContent = kdr;
+    if (kdr === 'Undefeated' || kdr >= 1) {
+        el.classList.add('kills');
+        el.classList.remove('deaths')
+    } else {
+        el.classList.add('deaths');
+        el.classList.remove('kills')
+    }
 }
 
 ipcRenderer.on('kill', (event, message) => {
     console.log(message);
-    if (message.playSound && configuration.readSettings('soundOn')) {     // todo and enabled in settings
+    if (message.playSound && configuration.readSettings('soundOn')) {
         var audio = new Audio(__dirname + '/wav/killsound.wav');
-        audio.volume = configuration.readSettings('volume') / 100;    // todo take this from settings  /100
+        audio.volume = configuration.readSettings('volume') / 100;
         audio.currentTime = 0;
         audio.play();
     }
@@ -101,11 +115,12 @@ ipcRenderer.on('kill', (event, message) => {
         name: message.Victim,
         timestamp: message.timestamp,
         combatRank: CombatRanks[message.CombatRank],
-        location: CMDR.location
+        location: CMDR.location,
+        body: CMDR.body
     });
     CMDR.totalKills++;
     document.getElementById('totalKills').textContent = '' + CMDR.totalKills;
-    document.getElementById('totalKdr').textContent = calculateKDR(CMDR);
+    calculateKDR(CMDR, document.getElementById('totalKdr'));
     var tableRef = document.getElementById('combatLog').getElementsByTagName('tbody')[0];
     var newRow = tableRef.insertRow(0);
     newRow.addEventListener('click', () => {headToHeadEvent(message.Victim)});
@@ -113,7 +128,10 @@ ipcRenderer.on('kill', (event, message) => {
     newRow.insertCell(1).appendChild(document.createTextNode(message.Victim));
     newRow.insertCell(2).appendChild(document.createTextNode(CombatRanks[message.CombatRank]));
     newRow.insertCell(3).appendChild(document.createTextNode(message.timestamp));
-    newRow.insertCell(4).appendChild(document.createTextNode(CMDR.location));
+    var locationCell = newRow.insertCell(4);
+    locationCell.appendChild(document.createTextNode(CMDR.location));
+    locationCell.appendChild(document.createElement('br'));
+    locationCell.appendChild(document.createTextNode(CMDR.body));
 
     resizeTable();
 });
@@ -125,7 +143,8 @@ ipcRenderer.on('death', (event, message) => {
         name: message.KillerName,
         timestamp: message.timestamp,
         combatRank: message.KillerRank,
-        location: CMDR.location
+        location: CMDR.location,
+        body: CMDR.body
     });
     document.getElementById('totalDeaths').textContent = '' + CMDR.totalDeaths;
     var tableRef = document.getElementById('combatLog').getElementsByTagName('tbody')[0];
@@ -136,7 +155,10 @@ ipcRenderer.on('death', (event, message) => {
     newRow.insertCell(1).appendChild(nameText);
     newRow.insertCell(2).appendChild(document.createTextNode(CombatRanks[message.KillerRank]));
     newRow.insertCell(3).appendChild(document.createTextNode(message.timestamp));
-    newRow.insertCell(4).appendChild(document.createTextNode(CMDR.location));
+    var locationCell = newRow.insertCell(4);
+    locationCell.appendChild(document.createTextNode(CMDR.location));
+    locationCell.appendChild(document.createElement('br'));
+    locationCell.appendChild(document.createTextNode(CMDR.body));
 
     resizeTable();
 });

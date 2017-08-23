@@ -5,7 +5,7 @@
   "main": "./main.js",
   "scripts": {
     "start": "electron .",
-    "package": "electron-packager ./ PvPTracker --all --out ~/Desktop/PvpTracker --version 1.6.11 --overwrite --icon=./app/img/app-icon.icns",
+    "package": "electron-packager ./ PvPTracker --all --out %HOMEPATH%/Desktop/PvpTracker --version 1.6.11 --overwrite --icon=./app/img/app-icon.icns",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Daniel Morrison",

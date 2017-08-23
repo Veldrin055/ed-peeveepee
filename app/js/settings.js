@@ -2,7 +2,9 @@
  * Created by Daniel on 14/08/2017.
  */
 
-const remote = require('electron').remote;
+const electron = require('electron');
+const {remote} = electron;
+const {dialog} = remote;
 const configuration = require('../configuration.js');
 
 (function () {
@@ -15,6 +17,7 @@ const configuration = require('../configuration.js');
         document.getElementById('volume').value = configuration.readSettings('volume');
 
         document.getElementById("settingsForm").addEventListener('submit', (e) => {
+            console.log('Saving settings...');
             e.preventDefault();
 
             configuration.saveSettings('journalDir', document.getElementById('journalFileLocation').value);
@@ -24,6 +27,19 @@ const configuration = require('../configuration.js');
             const window = remote.getCurrentWindow();
             window.close();
         }, false);
+
+        document.getElementById('chooseFile').addEventListener('click', (e) => {
+            e.preventDefault();
+            dialog.showOpenDialog(remote.getCurrentWindow(), {
+                title: 'Choose Journal file directory',
+                defaultPath: configuration.readSettings('journalDir'),
+                properties: ['openDirectory']
+            }, (filePaths) => {
+                var filePath = filePaths[0];
+                console.log('Setting Journal dir to ' + filePath);
+                document.getElementById('journalFileLocation').value = filePath;
+            })
+        }, false)
     }
 
     document.onreadystatechange = function () {

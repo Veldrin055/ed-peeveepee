@@ -19,11 +19,22 @@ ipcRenderer.on('name', (events, message) => {
     document.getElementById('cmdrName').textContent = CMDR.name;
 });
 
-function calculateKDR(kills, deaths) {
-    if (deaths == 0) {
-        return 'Undefeated'
+function calculateKDR(kills, deaths, el) {
+    var kdr;
+    if (deaths === 0) {
+        kdr = 'Undefeated'
+    } else {
+        kdr = parseFloat(Math.round(kills / deaths)).toFixed(2);
     }
-    return parseFloat(Math.round(kills / deaths)).toFixed(2);
+
+    el.textContent = kdr;
+    if (kdr === 'Undefeated' || kdr >= 1) {
+        el.classList.add('kills');
+        el.classList.remove('deaths')
+    } else {
+        el.classList.add('deaths');
+        el.classList.remove('kills')
+    }
 }
 
 function resizeTable() {
@@ -48,7 +59,7 @@ ipcRenderer.on('head-to-head', (event, message) => {
     document.getElementById('cmdrName').textContent = message.name;
     document.getElementById('totalKills').textContent = '' + message.kills;
     document.getElementById('totalDeaths').textContent = '' + message.deaths;
-    document.getElementById('totalKDR').textContent = calculateKDR(message.kills, message.deaths);
+    calculateKDR(message.kills, message.deaths, document.getElementById('totalKDR'));
     var tableRef = document.getElementById('combatLog').getElementsByTagName('tbody')[0];
     var i = 0;
     message.log.forEach(entry => {
@@ -56,7 +67,10 @@ ipcRenderer.on('head-to-head', (event, message) => {
         newRow.insertCell(0).appendChild(document.createTextNode(entry.event));
         newRow.insertCell(1).appendChild(document.createTextNode(entry.combatRank));
         newRow.insertCell(2).appendChild(document.createTextNode(entry.timestamp));
-        newRow.insertCell(3).appendChild(document.createTextNode(entry.location));
+        var locationCell = newRow.insertCell(3);
+        locationCell.appendChild(document.createTextNode(entry.location));
+        locationCell.appendChild(document.createElement('br'));
+        locationCell.appendChild(document.createTextNode(entry.body));
     });
 
     resizeTable();

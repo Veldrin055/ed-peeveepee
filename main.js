@@ -91,14 +91,21 @@ function createWindow() {
         console.log(journalDir);
         fs.readdir(journalDir, (err, items) => {
             // here do the regex, get them all in order
-            for (var i = 0; i < items.length; i++) {
-                if (path.extname(items[i]) != '.log') {
+            var logFiles = items.filter((itemName) => {
+                 return path.extname(itemName) === '.log';
+            });
+            if (logFiles.length === 0) {
+                win.webContents.send('error', {message: "Cannot find journal log file in " + journalDir});
+                return;
+            }
+            for (var i = 0; i < logFiles.length; i++) {
+                if (path.extname(logFiles[i]) != '.log') {
                     continue;
                 }
-                var lines = fs.readFileSync((journalDir + '/' + items[i]), 'utf-8').split('\n').filter(Boolean);
+                var lines = fs.readFileSync((journalDir + '/' + logFiles[i]), 'utf-8').split('\n').filter(Boolean);
                 lines.forEach(line => readJournalLine(line, true));
             }
-            startWatching(journalDir + '/' + items[items.length - 1], false);
+            startWatching(journalDir + '/' + logFiles[logFiles.length - 1], false);
         });
         splash.destroy();
         win.show();
@@ -145,8 +152,11 @@ function readJournalLine(line, backFill) {
         console.error(e);
         return;
     }
-    if ('StarSystem' in obj) {
-        win.webContents.send('location', obj.StarSystem);
+    if ('StarSystem' in obj && obj.event != 'StartJump') {
+        win.webContents.send('location', {
+            starSystem: obj.StarSystem,
+            body: obj.Body
+        });
     }
     if (obj.event == 'PVPKill') {
         obj.playSound = !backFill && soundOn;
