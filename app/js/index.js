@@ -61,6 +61,7 @@ function resizeTable() {
 }
 
 function headToHeadEvent(cmdrName) {
+    console.log('head to head ' + cmdrName);
     let modal = new remote.BrowserWindow({
         parent: remote.getCurrentWindow(),
         modal: true,
@@ -77,12 +78,12 @@ function headToHeadEvent(cmdrName) {
     }));
 
     modal.once('ready-to-show', () => {
-        document.body.classList.toggle('overlay', true);
+        document.getElementById('content').classList.toggle('overlay', true);
         modal.webContents.send('head-to-head', headToHead(cmdrName));
         modal.show();
     });
 
-    modal.on('closed', () => document.body.classList.toggle('overlay', false));
+    modal.on('closed', () => document.getElementById('content').classList.toggle('overlay', false));
 }
 
 function calculateKDR (cmdr, el) {
@@ -103,7 +104,6 @@ function calculateKDR (cmdr, el) {
 }
 
 ipcRenderer.on('kill', (event, message) => {
-    console.log(message);
     if (message.playSound && configuration.readSettings('soundOn')) {
         var audio = new Audio(__dirname + '/wav/killsound.wav');
         audio.volume = configuration.readSettings('volume') / 100;
@@ -130,37 +130,75 @@ ipcRenderer.on('kill', (event, message) => {
     newRow.insertCell(3).appendChild(document.createTextNode(message.timestamp));
     var locationCell = newRow.insertCell(4);
     locationCell.appendChild(document.createTextNode(CMDR.location));
-    locationCell.appendChild(document.createElement('br'));
-    locationCell.appendChild(document.createTextNode(CMDR.body));
+    if (CMDR.location != CMDR.body) {
+        locationCell.appendChild(document.createElement('br'));
+        locationCell.appendChild(document.createTextNode(CMDR.body));
+    }
 
     resizeTable();
 });
 
-ipcRenderer.on('death', (event, message) => {
-    CMDR.totalDeaths++;
-    CMDR.eventLog.push({
-        event: 'Death',
-        name: message.KillerName,
-        timestamp: message.timestamp,
-        combatRank: message.KillerRank,
-        location: CMDR.location,
-        body: CMDR.body
-    });
-    document.getElementById('totalDeaths').textContent = '' + CMDR.totalDeaths;
+function insertCombatEventRow(message) {
     var tableRef = document.getElementById('combatLog').getElementsByTagName('tbody')[0];
     var newRow = tableRef.insertRow(0);
-    newRow.insertCell(0).appendChild(document.createTextNode('Death'));
-    var nameText = document.createTextNode(message.KillerName);
-    nameText.addEventListener('click', () => {headToHeadEvent(message.KillerName)});
+    newRow.insertCell(0).appendChild(document.createTextNode(message.eventType));
+    var nameText = document.createTextNode(message.name);
+    newRow.addEventListener('click', () => {
+        headToHeadEvent(message.name)
+    });
     newRow.insertCell(1).appendChild(nameText);
-    newRow.insertCell(2).appendChild(document.createTextNode(CombatRanks[message.KillerRank]));
+    newRow.insertCell(2).appendChild(document.createTextNode([message.KillerRank]));
     newRow.insertCell(3).appendChild(document.createTextNode(message.timestamp));
     var locationCell = newRow.insertCell(4);
     locationCell.appendChild(document.createTextNode(CMDR.location));
-    locationCell.appendChild(document.createElement('br'));
-    locationCell.appendChild(document.createTextNode(CMDR.body));
+    if (CMDR.location != CMDR.body) {
+        locationCell.appendChild(document.createElement('br'));
+        locationCell.appendChild(document.createTextNode(CMDR.body));
+    }
 
     resizeTable();
+}
+ipcRenderer.on('death', (event, message) => {
+    CMDR.totalDeaths++;
+    if (message.KillerName != null) {
+        CMDR.eventLog.push({
+            event: 'Death',
+            name: message.KillerName.replace('Cmdr ', ''),
+            timestamp: message.timestamp,
+            combatRank: message.KillerRank,
+            location: CMDR.location,
+            body: CMDR.body
+        });
+        message.eventType = 'Death';
+        insertCombatEventRow({
+            eventType: 'Death',
+            name: message.KillerName.replace('Cmdr ', ''),
+            timestamp: message.timestamp,
+            rank: message.KillerRank,
+            location: CMDR.location,
+            boyd: CMDR.body
+        });
+    } else if (message.Killers != null) {
+        message.Killers.forEach((killer) => {
+            CMDR.eventLog.push({
+                event: 'Dearth',
+                name: killer.Name.replace('Cmdr ', ''),
+                timestamp: message.timestamp,
+                combatRank: killer.Rank,
+                location: CMDR.location,
+                body: CMDR.body
+            });
+            insertCombatEventRow({
+                eventType: 'Death',
+                name: killer.Name.replace('Cmdr ', ''),
+                timestamp: message.timestamp,
+                rank: killer.Rank,
+                location: CMDR.location,
+                boyd: CMDR.body
+            });
+        });
+    }
+    document.getElementById('totalDeaths').textContent = '' + CMDR.totalDeaths;
 });
 
 (function () {

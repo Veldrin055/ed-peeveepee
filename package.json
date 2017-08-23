@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "chokidar": "^1.7.0",
+    "faye": "^1.2.4",
     "nconf": "^0.8.4",
     "tail": "^1.2.2"
   },

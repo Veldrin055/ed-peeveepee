@@ -129,6 +129,11 @@ app.on('ready', () =>{
     if (!configuration.readSettings('volume')) {
         configuration.saveSettings('volume', 50);
     }
+    var x1 = 0, y1 = 0, z1 = 0;
+    var x2 = 12.46875, y2 = -66.71875, z2 = -22.90625;
+
+    var sqrt = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2) + Math.pow(z2 - z1, 2));
+    console.log('KF/Sol distance ' + sqrt);
     setSettings();
     createWindow();
 });
@@ -145,6 +150,11 @@ app.on('activate', () => {
     }
 });
 
+var isACmdr = function (obj) {
+    return (obj.KillerName != null && obj.KillerName.startsWith('Cmdr')) ||
+        (obj.Killers != null );
+
+};
 function readJournalLine(line, backFill) {
     try {
         var obj = JSON.parse(line);
@@ -163,7 +173,7 @@ function readJournalLine(line, backFill) {
         obj.volume = volume;
         win.webContents.send('kill', obj);
     }
-    if (obj.event == 'Died') {
+    if (obj.event == 'Died' && isACmdr(obj)) {
         win.webContents.send('death', obj);
     }
     if (obj.event == 'LoadGame') {

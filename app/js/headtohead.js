@@ -69,8 +69,10 @@ ipcRenderer.on('head-to-head', (event, message) => {
         newRow.insertCell(2).appendChild(document.createTextNode(entry.timestamp));
         var locationCell = newRow.insertCell(3);
         locationCell.appendChild(document.createTextNode(entry.location));
-        locationCell.appendChild(document.createElement('br'));
-        locationCell.appendChild(document.createTextNode(entry.body));
+        if (entry.location != entry.body) {
+            locationCell.appendChild(document.createElement('br'));
+            locationCell.appendChild(document.createTextNode(entry.body));
+        }
     });
 
     resizeTable();
