@@ -1,10 +1,10 @@
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 import CmdrStats from '../components/CmdrStats';
-import {RootState} from '../reducers';
+import { RootState } from '../reducers';
 
-const mapStateToProps = (state: RootState) => ({
-  cmdr: state.cmdr
+const mapStateToProps = ({ cmdr }: RootState) => ({
+  cmdr
 });
 
 export default connect(mapStateToProps)(CmdrStats);

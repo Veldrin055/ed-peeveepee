@@ -1,3 +1,3 @@
-import {CounterAction} from './counterActions';
+import { CmdrStateAction } from './cmdrStateActions';
 
-export type RootActions = CounterAction[keyof CounterAction];
+export type RootActions = CmdrStateAction[keyof CmdrStateAction];

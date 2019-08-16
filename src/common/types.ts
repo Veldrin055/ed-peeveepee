@@ -7,7 +7,7 @@ export enum CombatRank {
   Master = 'Master',
   Dangerous = 'Dangerous',
   Deadly = 'Deadly',
-  Elite = 'Elite',
+  Elite = 'Elite'
 }
 
 export const CombatRanks: CombatRank[] = [
@@ -19,67 +19,66 @@ export const CombatRanks: CombatRank[] = [
   CombatRank.Master,
   CombatRank.Dangerous,
   CombatRank.Deadly,
-  CombatRank.Elite,
-]
+  CombatRank.Elite
+];
 
 export interface CmdrState {
-  totalKills: number
-  totalDeaths: number
-  eventLog: PvPEvent[]
-  name: string
-  location: Location
-  rank: CombatRank
+  totalKills: number;
+  totalDeaths: number;
+  name: string;
+  location: Location;
+  rank: CombatRank;
 }
 
 export interface Coordinates {
-  x: number
-  y: number
-  z: number
+  x: number;
+  y: number;
+  z: number;
 }
 
 export interface Location {
-  starSystem: string
-  body: string,
-  position: Coordinates
+  starSystem: string;
+  body: string;
+  position: Coordinates;
 }
 
 export interface LoadGameEvent {
-  name: string
+  name: string;
 }
 
 export interface RankEvent {
-  combatRank: CombatRank
+  combatRank: CombatRank;
 }
 
 export enum PvpEventType {
-  Kill,
-  Death,
+  Kill = 'Kill',
+  Death = 'Death'
 }
 
 export interface PvPEvent {
-  event: PvpEventType
-  name: string
-  timestamp: Date
-  combatRank: CombatRank
-  location: Location
+  event: PvpEventType;
+  name: string;
+  timestamp: Date;
+  combatRank: CombatRank;
+  location: Location;
 }
 
 export interface KillEvent extends PvPEvent {
-  event: PvpEventType.Kill,
+  event: PvpEventType.Kill;
 }
 
 export interface DeathEvent extends PvPEvent {
-  event: PvpEventType.Death,
+  event: PvpEventType.Death;
 }
 
 export interface DeathEventMsg {
-  event: PvpEventType.Death
-  timestamp: Date
-  location: Location
-  killers: Killer[]
+  event: PvpEventType.Death;
+  timestamp: Date;
+  location: Location;
+  killers: Killer[];
 }
 
 export interface Killer {
-  readonly name: string
-  readonly combatRank: CombatRank
+  readonly name: string;
+  readonly combatRank: CombatRank;
 }
