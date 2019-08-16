@@ -1,11 +1,6 @@
 import * as React from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { CmdrState } from '../../../common/types';
 import { Typography } from '@material-ui/core';
@@ -18,13 +13,25 @@ export interface Props {
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      flexGrow: 1
+      height: '100%',
+      maxHeight: '100%'
+    },
+    container: {
+      height: '100%',
+      padding: theme.spacing(3),
+      maxHeight: '100%'
     },
     paper: {
       width: '100%',
       marginTop: theme.spacing(3),
+      padding: theme.spacing(4),
       overflowX: 'initial',
       margin: 12
+    },
+    typography: {
+      marginTop: theme.spacing(6),
+      marginLeft: theme.spacing(6),
+      color: 'white'
     }
   })
 );
@@ -40,7 +47,7 @@ const Cmdr: React.FunctionComponent<Props> = ({ cmdr }) => {
   const classes = useStyles();
   return (
     <div className={classes.root}>
-      <Grid container={true} component="div">
+      <Grid container={true} component="div" className={classes.container}>
         <Paper className={classes.paper}>
           <Typography variant="body1">CMDR {cmdr.name}</Typography>
           <Typography variant="body1">Rank {cmdr.rank}</Typography>
@@ -51,6 +58,10 @@ const Cmdr: React.FunctionComponent<Props> = ({ cmdr }) => {
           <Typography variant="body1">Total Kills {cmdr.totalKills}</Typography>
           <Typography variant="body1">Total Deaths {cmdr.totalDeaths}</Typography>
         </Paper>
+
+        <Typography variant="h6" className={classes.typography}>
+          Combat Log
+        </Typography>
         <CombatLog />
       </Grid>
     </div>

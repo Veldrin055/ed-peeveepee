@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 
-import CombatLog from '../components/CombatLog';
+import HeadToHead from '../components/HeadToHead';
 import { RootState } from '../reducers';
 
 const mapStateToProps = ({ combatLog }: RootState) => ({
   combatLog: combatLog.eventLog
 });
 
-export default connect(mapStateToProps)(CombatLog);
+export default connect(mapStateToProps)(HeadToHead);

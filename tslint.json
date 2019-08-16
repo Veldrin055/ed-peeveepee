@@ -9,6 +9,7 @@
     "rules": {
         "max-line-length": [true, 240],
         "trailing-comma": false,
+        "semicolon": false,
         "ter-indent": [
             true,
             2,
@@ -23,7 +24,8 @@
         "jsx-self-close": true,
         "import-name": false,
         "function-name": false,
-        "jsx-boolean-value": false
+        "jsx-boolean-value": false,
+        "jsx-no-lambda": false
 
     },
     "rulesDirectory": []
