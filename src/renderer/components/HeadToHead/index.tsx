@@ -89,7 +89,12 @@ export default class HeadToHead extends React.Component<HeadToHeadProps, HeadToH
     const totalDeaths = events.filter(event => event.event === PvpEventType.Death).length;
     return (
       <div>
-        <Dialog onClose={this.handleClose} aria-labelledby="customized-dialog-title" open={this.state.open}>
+        <Dialog
+          onClose={this.handleClose}
+          aria-labelledby="customized-dialog-title"
+          open={this.state.open}
+          maxWidth="md"
+        >
           <DialogTitle onClose={this.handleClose}>Head to Head: CMDR {name}</DialogTitle>
           <DialogContent dividers>
             <Typography variant="body1">Kills: {totalKills}</Typography>

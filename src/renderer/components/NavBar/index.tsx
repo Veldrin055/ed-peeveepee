@@ -4,12 +4,17 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import CloseIcon from '@material-ui/icons/Close';
 import MinimizeIcon from '@material-ui/icons/Minimize';
 import MaximizeIcon from '@material-ui/icons/Maximize';
+import { Tabs, Tab } from '@material-ui/core';
+
+export interface NavBarProps {
+  value: number;
+  handleChange: (event: React.ChangeEvent<{}>, newValue: number) => void;
+}
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -21,7 +26,7 @@ const useStyles = makeStyles((theme: Theme) =>
       marginRight: theme.spacing(2),
       '-webkit-app-region': 'no-drag'
     },
-    button: {
+    tab: {
       '-webkit-app-region': 'no-drag'
     },
     title: {
@@ -55,7 +60,7 @@ const maximize = () => {
   }
 };
 
-export default function NavBar() {
+export default ({ value, handleChange }: NavBarProps) => {
   const classes = useStyles();
 
   return (
@@ -68,21 +73,12 @@ export default function NavBar() {
           <Typography className={classes.title} variant="h6" noWrap>
             PvP
           </Typography>
-          <Button color="inherit" className={classes.button}>
-            Main
-          </Button>
-          <Button color="inherit" className={classes.button}>
-            BGS
-          </Button>
-          <Button color="inherit" className={classes.button}>
-            Hero
-          </Button>
-          <Button color="inherit" className={classes.button}>
-            Trade
-          </Button>
-          <Button color="inherit" className={classes.button}>
-            PvP
-          </Button>
+          <Tabs value={value} onChange={handleChange} className={classes.tab}>
+            <Tab label="Stats" />
+            <Tab label="IFF" />
+            <Tab label="Beacon" />
+            <Tab label="Games" />
+          </Tabs>
           <div className={classes.root} />
           <div className={classes.sectionDesktop}>
             <IconButton color="inherit" onClick={minimize}>
@@ -99,4 +95,4 @@ export default function NavBar() {
       </AppBar>
     </div>
   );
-}
+};
