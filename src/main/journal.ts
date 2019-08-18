@@ -1,9 +1,9 @@
-import {Journal} from 'edjr'
-import {BrowserWindow} from 'electron'
-import {CombatRanks, Killer, KillEvent, Location, PvpEventType} from '../common/types'
+import { Journal } from 'edjr'
+import { BrowserWindow } from 'electron'
+import { CombatRanks, Killer, KillEvent, Location, PvpEventType } from '../common/types'
 
 interface JournalEvent {
-  readonly timestamp: Date,
+  readonly timestamp: Date
   readonly event: string
 }
 
@@ -42,7 +42,7 @@ export default ({ webContents }: BrowserWindow) => {
         x: starSystemEvent.StarPos[0],
         y: starSystemEvent.StarPos[1],
         z: starSystemEvent.StarPos[2],
-      }
+      },
     }
     currentLocation = location
     webContents.send('location', location)
@@ -53,12 +53,12 @@ export default ({ webContents }: BrowserWindow) => {
   journal.on('FSDJump', (e: LocationEvent) => locationUpdate(e))
 
   // load game
-  journal.on('LoadGame', ({ Commander }) => webContents.send('loadGame', { name: Commander}))
-  journal.on('NewCommander', ({ Name }) => webContents.send('loadGame', { name: Name}))
+  journal.on('LoadGame', ({ Commander }) => webContents.send('loadGame', { name: Commander }))
+  journal.on('NewCommander', ({ Name }) => webContents.send('loadGame', { name: Name }))
 
   // ranks
-  journal.on('Rank', ({ Combat }) => webContents.send('rank', { combatRank: CombatRanks[Combat]}))
-  journal.on('Promotion', ({ Combat }) => webContents.send('rank', { combatRank: CombatRanks[Combat]}))
+  journal.on('Rank', ({ Combat }) => webContents.send('rank', { combatRank: CombatRanks[Combat] }))
+  journal.on('Promotion', ({ Combat }) => webContents.send('rank', { combatRank: CombatRanks[Combat] }))
 
   // pvp kill
   journal.on('PVPKill', (e: PvPKillEvent) => {
@@ -67,7 +67,7 @@ export default ({ webContents }: BrowserWindow) => {
       event: PvpEventType.Kill,
       location: currentLocation,
       name: e.Victim,
-      combatRank: CombatRanks[e.CombatRank]
+      combatRank: CombatRanks[e.CombatRank],
     }
     webContents.send('kill', msg)
   })
@@ -76,14 +76,16 @@ export default ({ webContents }: BrowserWindow) => {
   journal.on('Died', (e: DiedEvent) => {
     let killers: Killer[] = []
     if (e.KillerName && e.KillerName.startsWith('Cmdr')) {
-      killers = [{
-        name: e.KillerName,
-        combatRank: CombatRanks[e.KillerRank]
-      }]
+      killers = [
+        {
+          name: e.KillerName,
+          combatRank: CombatRanks[e.KillerRank],
+        },
+      ]
     } else if (e.Killers) {
       killers = e.Killers.map(killer => ({
         name: killer.Name,
-        combatRank: CombatRanks[killer.Rank]
+        combatRank: CombatRanks[killer.Rank],
       }))
     }
     if (killers) {
@@ -100,4 +102,5 @@ export default ({ webContents }: BrowserWindow) => {
   webContents.on('dom-ready', () => journal.scan({ fromBeginning: true }))
   webContents.on('destroyed', () => journal.stop())
 
+  return journal
 }

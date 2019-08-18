@@ -1,15 +1,18 @@
-import { combineReducers } from 'redux';
+import { combineReducers } from 'redux'
 
-import { combatLogReducer, CombatLogState } from './combatLogReducer';
-import { cmdrStateReducer } from './cmdrStateReducer';
-import { CmdrState } from '../../common/types';
+import { combatLogReducer, CombatLogState } from './combatLogReducer'
+import { cmdrStateReducer } from './cmdrStateReducer'
+import { CmdrState } from '../../common/types'
+import { iffReducer, IffState } from './iffReducer'
 
 export interface RootState {
-  combatLog: CombatLogState;
-  cmdr: CmdrState;
+  combatLog: CombatLogState
+  cmdr: CmdrState
+  iff: IffState
 }
 
 export const rootReducer = combineReducers<RootState | undefined>({
   combatLog: combatLogReducer,
-  cmdr: cmdrStateReducer
-});
+  cmdr: cmdrStateReducer,
+  iff: iffReducer,
+})
