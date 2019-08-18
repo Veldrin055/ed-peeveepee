@@ -18,5 +18,8 @@
     "./src",
     "./test",
     "./mocks"
+  ],
+  "files": [
+    "images.d.ts"
   ]
 }

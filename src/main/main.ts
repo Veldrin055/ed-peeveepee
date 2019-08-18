@@ -33,7 +33,7 @@ const createWindow = async () => {
     backgroundColor: '#616161',
   })
   jrnl = journal(win)
-  iffStore(journal, win)
+  iffStore(jrnl, win)
 
   if (process.env.NODE_ENV !== 'production') {
     process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = '1'

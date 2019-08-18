@@ -1,14 +1,13 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import { app, remote } from 'electron'
+import { app, BrowserWindow, ipcMain, remote } from 'electron'
 import { Journal } from 'edjr'
 import { ReceiveTextEvent } from '../../common/types'
-import BrowserWindow = Electron.BrowserWindow
 
 export enum IFFLabel {
-  ally,
-  neutral,
-  enemy,
+  ally = 'Ally',
+  neutral = 'Neutral',
+  enemy = 'Enemy',
 }
 
 export interface IFFRecord {
@@ -19,7 +18,9 @@ export interface IFFRecord {
 
 export default (journal: Journal, { webContents }: BrowserWindow) => {
   const iffStore = new IFFStore()
-  webContents.send('iffSnapshot', iffStore.getAll())
+  webContents.on('dom-ready', () => webContents.send('iffSnapshot', iffStore.getAll()))
+
+  ipcMain.on('iffAdd', (event: any, payload: IFFRecord) => iffStore.set(payload))
 
   journal.on('ReceiveText', (e: ReceiveTextEvent) => {
     if (iffStore.get(e.From)) {
@@ -30,7 +31,7 @@ export default (journal: Journal, { webContents }: BrowserWindow) => {
 
 class IFFStore {
   private readonly path: string
-  private readonly data: Map<string, IFFRecord>
+  private data: IFFRecord[]
 
   constructor() {
     const appData = (app || remote.app).getPath('userData')
@@ -39,25 +40,24 @@ class IFFStore {
   }
 
   get(name: string) {
-    return this.data.get(name.toLowerCase())
+    return this.data.find(it => it.name === name.toLowerCase())
   }
 
   getAll() {
-    const records: IFFRecord[] = []
-    this.data.forEach(record => records.push(record))
-    return records
+    return this.data
   }
 
   set(record: IFFRecord) {
-    this.data.set(record.name.toLowerCase(), record)
+    console.log('set', record)
+    this.data = [record, ...this.data.filter(it => it.name.toLowerCase() !== record.name.toLowerCase())]
     fs.writeFileSync(this.path, JSON.stringify(this.data))
   }
 
-  delete(name: string) {
-    this.data.delete(name.toLowerCase())
+  del(name: string) {
+    this.data = this.data.filter(it => it.name.toLowerCase() !== name.toLowerCase())
   }
 
-  private static parseDataFile(filePath: string) {
+  private static parseDataFile(filePath: string): IFFRecord[] {
     try {
       return JSON.parse(fs.readFileSync(filePath).toString())
     } catch (error) {
