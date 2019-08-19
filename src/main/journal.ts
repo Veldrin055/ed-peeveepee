@@ -100,7 +100,6 @@ export default ({ webContents }: BrowserWindow) => {
 
   // Scan journal once UI is ready
   webContents.on('dom-ready', () => journal.scan({ fromBeginning: true }))
-  webContents.on('destroyed', () => journal.stop())
 
   return journal
 }

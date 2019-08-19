@@ -22,6 +22,8 @@ export default (journal: Journal, { webContents }: BrowserWindow) => {
 
   ipcMain.on('iffAdd', (event: any, payload: IFFRecord) => iffStore.set(payload))
 
+  ipcMain.on('iffDelete', (event: any, payload: string) => iffStore.del(payload))
+
   journal.on('ReceiveText', (e: ReceiveTextEvent) => {
     if (iffStore.get(e.From)) {
       // handle target found
@@ -48,14 +50,16 @@ class IFFStore {
   }
 
   set(record: IFFRecord) {
-    console.log('set', record)
     this.data = [record, ...this.data.filter(it => it.name.toLowerCase() !== record.name.toLowerCase())]
-    fs.writeFileSync(this.path, JSON.stringify(this.data))
+    this.persist()
   }
 
   del(name: string) {
     this.data = this.data.filter(it => it.name.toLowerCase() !== name.toLowerCase())
+    this.persist()
   }
+
+  private persist = () => fs.writeFileSync(this.path, JSON.stringify(this.data))
 
   private static parseDataFile(filePath: string): IFFRecord[] {
     try {
@@ -65,7 +69,3 @@ class IFFStore {
     }
   }
 }
-
-// store provides crud
-// emits add actions to the renderer
-// render redux provides middleware to change the file store on ui update actions
