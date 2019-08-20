@@ -23,7 +23,7 @@ const createWindow = async () => {
 
   win = new BrowserWindow({
     width: 800,
-    height: 800,
+    height: 830,
     frame: false,
     // transparent: true,
     resizable: true,
@@ -58,12 +58,8 @@ const createWindow = async () => {
   win.on('closed', () => {
     win = null
   })
-
-  setInterval(() => {
-    if (win) win.webContents.send('ping')
-  }, 2000)
 }
-
+app.setAppUserModelId(process.execPath) // todo dev?
 app.on('ready', createWindow)
 
 app.on('window-all-closed', () => {

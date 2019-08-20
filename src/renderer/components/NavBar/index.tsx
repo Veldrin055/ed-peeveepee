@@ -37,9 +37,11 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'flex',
     },
     controlButtons: {
+      '-webkit-app-region': 'no-drag',
       marginRight: theme.spacing(3),
     },
     controlButton: {
+      '-webkit-app-region': 'no-drag',
       padding: theme.spacing(3),
     },
   })

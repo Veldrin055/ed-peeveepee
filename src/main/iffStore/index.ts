@@ -1,9 +1,8 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import { app, BrowserWindow, ipcMain, remote } from 'electron'
+import { app, BrowserWindow, ipcMain, remote, Notification } from 'electron'
 import { Journal } from 'edjr'
 import { ReceiveTextEvent, ShipTargetedEvent } from '../../common/types'
-import Notification = Electron.Notification
 
 export enum IFFLabel {
   ally = 'Ally',
@@ -60,6 +59,7 @@ export default (journal: Journal, { webContents }: BrowserWindow) => {
   const iffStore = new IFFStore()
 
   const targetIdentified = ({ name, label, notes }: IFFRecord) => {
+    console.log('notify')
     const notification = new Notification({
       title: 'Target found!',
       body: `${label}: ${name}
@@ -77,6 +77,7 @@ export default (journal: Journal, { webContents }: BrowserWindow) => {
 
   journal.on('ReceiveText', (e: ReceiveTextEvent, historical) => {
     if (!historical) {
+      console.log('receive text', e)
       const record = iffStore.get(e.From)
       if (record) {
         targetIdentified(record)

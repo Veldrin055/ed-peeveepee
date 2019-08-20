@@ -55,14 +55,16 @@ const Cmdr: React.FunctionComponent<Props> = ({ cmdr }) => {
     <div className={classes.root}>
       <Grid container={true} component="div" className={classes.container} direction="column">
         <Paper className={classes.paper}>
-          <Typography variant="body1">CMDR {cmdr.name}</Typography>
-          <Typography variant="body1">Rank {cmdr.rank}</Typography>
-          <Typography variant="body1">
-            Location {cmdr.location.starSystem} / {cmdr.location.body}
-          </Typography>
-          <Typography variant="body1">KDR {kdr(cmdr)}</Typography>
-          <Typography variant="body1">Total Kills {cmdr.totalKills}</Typography>
-          <Typography variant="body1">Total Deaths {cmdr.totalDeaths}</Typography>
+          <Grid container={true}>
+            <Typography variant="body1">CMDR {cmdr.name}</Typography>
+            <Typography variant="body1">Rank {cmdr.rank}</Typography>
+            <Typography variant="body1">
+              Location {cmdr.location.starSystem} / {cmdr.location.body}
+            </Typography>
+            <Typography variant="body1">KDR {kdr(cmdr)}</Typography>
+            <Typography variant="body1">Total Kills {cmdr.totalKills}</Typography>
+            <Typography variant="body1">Total Deaths {cmdr.totalDeaths}</Typography>
+          </Grid>
         </Paper>
         <Grid className={classes.combatLog} component="div">
           <Typography variant="h6" className={classes.typography}>
