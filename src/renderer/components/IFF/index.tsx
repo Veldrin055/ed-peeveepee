@@ -16,7 +16,7 @@ import Typography from '@material-ui/core/Typography'
 import { WithStyles } from '@material-ui/styles'
 import EditDialog from './EditDialog'
 
-interface IFFProps {
+interface IFFProps extends WithStyles<typeof styles> {
   iff: IFFRecord[]
   add: (record: IFFRecord) => void
   del: (name: string) => void
@@ -48,11 +48,8 @@ const styles = (theme: Theme) =>
     neutral: {
       color: '#00b3f7',
     },
-    closeButton: {
-      position: 'absolute',
-      right: theme.spacing(1),
-      top: theme.spacing(1),
-      color: theme.palette.grey[500],
+    addButton: {
+      color: theme.palette.primary.dark,
     },
   })
 
@@ -80,7 +77,7 @@ const IffListItem = withStyles(styles)(({ iff, del, edit, classes }: IFFListItem
   )
 })
 
-const Iff: React.FunctionComponent<IFFProps> = ({ iff, add, del }: IFFProps) => {
+const Iff = withStyles(styles)(({ iff, add, del, classes }: IFFProps) => {
   const [dialogData, setDialogData] = React.useState<EditDialogState>({
     open: false,
     record: undefined,
@@ -102,7 +99,9 @@ const Iff: React.FunctionComponent<IFFProps> = ({ iff, add, del }: IFFProps) => 
   return (
     <div>
       <EditDialog open={dialogData.open} record={dialogData.record} handleClose={handleClose} save={save} />
-      <Button onClick={openNew}>Add</Button>
+      <Button variant="contained" color="primary" onClick={openNew}>
+        Add
+      </Button>
       {(!iff || !iff.length) && (
         <Typography variant="body2">
           {`Add the names of CMDRs that you want to be immediately notified about when you interact with them (scan, interdict).
@@ -118,6 +117,6 @@ const Iff: React.FunctionComponent<IFFProps> = ({ iff, add, del }: IFFProps) => 
       </List>
     </div>
   )
-}
+})
 
 export default Iff

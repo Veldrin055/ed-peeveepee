@@ -23,14 +23,12 @@ const useStyles = makeStyles((theme: Theme) =>
       overflowX: 'hidden',
       height: '100%',
       maxHeight: 480,
-      // overflowY: 'auto',
-      margin: 12,
       flexGrow: 1,
+      alignItems: 'centre',
     },
     table: {
       minWidth: 650,
       maxHeight: '100%',
-      // overflowY: 'auto'
     },
     tableHead: {
       padding: theme.spacing(2),

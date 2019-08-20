@@ -61,9 +61,10 @@ export default ({ webContents }: BrowserWindow) => {
   journal.on('Promotion', ({ Combat }) => webContents.send('rank', { combatRank: CombatRanks[Combat] }))
 
   // pvp kill
-  journal.on('PVPKill', (e: PvPKillEvent) => {
+  journal.on('PVPKill', (e: PvPKillEvent, historical) => {
     const msg: KillEvent = {
       ...e,
+      historical,
       event: PvpEventType.Kill,
       location: currentLocation,
       name: e.Victim,
@@ -73,7 +74,7 @@ export default ({ webContents }: BrowserWindow) => {
   })
 
   // pvp death
-  journal.on('Died', (e: DiedEvent) => {
+  journal.on('Died', (e: DiedEvent, historical) => {
     let killers: Killer[] = []
     if (e.KillerName && e.KillerName.startsWith('Cmdr')) {
       killers = [
@@ -91,6 +92,7 @@ export default ({ webContents }: BrowserWindow) => {
     if (killers) {
       webContents.send('death', {
         killers,
+        historical,
         event: PvpEventType.Death,
         location: currentLocation,
         timestamp: e.timestamp,

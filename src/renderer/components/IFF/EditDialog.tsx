@@ -16,6 +16,7 @@ import TextField from '@material-ui/core/TextField'
 import DialogActions from '@material-ui/core/DialogActions'
 import Button from '@material-ui/core/Button'
 import FormControl from '@material-ui/core/FormControl'
+import Grid from '@material-ui/core/Grid'
 
 export interface EditDialogProps extends WithStyles<typeof styles> {
   open: boolean
@@ -56,10 +57,7 @@ const styles = (theme: Theme) =>
       marginRight: theme.spacing(3),
     },
     textField: {
-      margin: theme.spacing(1),
-      minWidth: 120,
-      marginRight: theme.spacing(3),
-      marginTop: theme.spacing(1),
+      marginTop: 5,
     },
   })
 
@@ -111,47 +109,49 @@ const EditDialog = withStyles(styles)(({ open, handleClose, save, record, classe
   }
   return (
     <Dialog onClose={handleClose} open={open} maxWidth="md">
-      <DialogTitle onClose={handleClose}>{record ? 'Edit' : 'New'}</DialogTitle>
+      <DialogTitle onClose={handleClose}>{record ? `Edit ${record.name}` : 'New'}</DialogTitle>
       <DialogContent dividers>
         <DialogContentText>
           Enter the target commander's name, omitting the CMDR prefix. Names are checked case-insensitive.
         </DialogContentText>
         <form className={classes.root} autoComplete="off">
-          <FormControl className={classes.formControl}>
-            <InputLabel htmlFor="label">Label</InputLabel>
-            <Select id="label" name="label" value={values.label} onChange={handleChange}>
-              <MenuItem value={IFFLabel.ally}>Ally</MenuItem>
-              <MenuItem value={IFFLabel.neutral}>Neutral</MenuItem>
-              <MenuItem value={IFFLabel.enemy}>Enemy</MenuItem>
-            </Select>
-          </FormControl>
-          <TextField
-            autoFocus
-            margin="dense"
-            name="name"
-            label="CMDR Name"
-            type="text"
-            value={values.name}
-            onChange={handleChange}
-            className={classes.textField}
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            name="notes"
-            label="Notes (optional)"
-            type="text"
-            fullWidth
-            value={values.notes}
-            onChange={handleChange}
-          />
+          <Grid container spacing={4}>
+            <FormControl className={classes.formControl}>
+              <InputLabel htmlFor="label">Type</InputLabel>
+              <Select id="label" name="label" value={values.label} onChange={handleChange}>
+                <MenuItem value={IFFLabel.ally}>Ally</MenuItem>
+                <MenuItem value={IFFLabel.neutral}>Neutral</MenuItem>
+                <MenuItem value={IFFLabel.enemy}>Enemy</MenuItem>
+              </Select>
+            </FormControl>
+            <TextField
+              autoFocus
+              margin="dense"
+              name="name"
+              label="CMDR Name"
+              type="text"
+              value={values.name}
+              onChange={handleChange}
+              className={classes.textField}
+            />
+            <TextField
+              autoFocus
+              margin="dense"
+              name="notes"
+              label="Notes (optional)"
+              type="text"
+              fullWidth
+              value={values.notes}
+              onChange={handleChange}
+            />
+          </Grid>
         </form>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="primary">
+        <Button onClick={handleClose} color="secondary" variant="contained">
           Cancel
         </Button>
-        <Button onClick={handleSave} color="primary">
+        <Button onClick={handleSave} color="primary" variant="contained">
           Save
         </Button>
       </DialogActions>

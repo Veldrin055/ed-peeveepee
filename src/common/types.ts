@@ -64,10 +64,12 @@ export interface PvPEvent {
 }
 
 export interface KillEvent extends PvPEvent {
+  historical: boolean
   event: PvpEventType.Kill
 }
 
 export interface DeathEvent extends PvPEvent {
+  historical: boolean
   event: PvpEventType.Death
 }
 
@@ -87,4 +89,8 @@ export interface ReceiveTextEvent {
   From: string
   Message: string
   Channel: string
+}
+
+export interface ShipTargetedEvent {
+  PilotName?: string
 }

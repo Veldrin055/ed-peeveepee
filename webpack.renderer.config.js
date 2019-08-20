@@ -52,6 +52,24 @@ module.exports = merge.smart(baseConfig, {
                     }
                 ]
             },
+            {
+                // Match woff2 in addition to patterns like .woff?v=1.1.1.
+                test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
+                use: {
+                    loader: "file-loader",
+                    options: {
+                        // Limit at 50k. Above that it emits separate files
+                        limit: 50000,
+
+                        // url-loader sets mimetype if it's passed.
+                        // Without this it derives it from the file extension
+                        mimetype: "application/font-woff",
+
+                        // Output below fonts directory
+                        name: "./fonts/[name].[ext]",
+                    }
+                },
+            },
             // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
             {
                 enforce: 'pre',

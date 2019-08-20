@@ -2,7 +2,8 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { app, BrowserWindow, ipcMain, remote } from 'electron'
 import { Journal } from 'edjr'
-import { ReceiveTextEvent } from '../../common/types'
+import { ReceiveTextEvent, ShipTargetedEvent } from '../../common/types'
+import Notification = Electron.Notification
 
 export enum IFFLabel {
   ally = 'Ally',
@@ -16,21 +17,6 @@ export interface IFFRecord {
   notes?: string
 }
 
-export default (journal: Journal, { webContents }: BrowserWindow) => {
-  const iffStore = new IFFStore()
-  webContents.on('dom-ready', () => webContents.send('iffSnapshot', iffStore.getAll()))
-
-  ipcMain.on('iffAdd', (event: any, payload: IFFRecord) => iffStore.set(payload))
-
-  ipcMain.on('iffDelete', (event: any, payload: string) => iffStore.del(payload))
-
-  journal.on('ReceiveText', (e: ReceiveTextEvent) => {
-    if (iffStore.get(e.From)) {
-      // handle target found
-    }
-  })
-}
-
 class IFFStore {
   private readonly path: string
   private data: IFFRecord[]
@@ -42,7 +28,7 @@ class IFFStore {
   }
 
   get(name: string) {
-    return this.data.find(it => it.name === name.toLowerCase())
+    return this.data.find(it => it.name.toLowerCase() === name.toLowerCase())
   }
 
   getAll() {
@@ -68,4 +54,46 @@ class IFFStore {
       return []
     }
   }
+}
+
+export default (journal: Journal, { webContents }: BrowserWindow) => {
+  const iffStore = new IFFStore()
+
+  const targetIdentified = ({ name, label, notes }: IFFRecord) => {
+    const notification = new Notification({
+      title: 'Target found!',
+      body: `${label}: ${name}
+      ${notes ? notes : ''}`,
+    })
+
+    notification.show()
+  }
+
+  webContents.on('dom-ready', () => webContents.send('iffSnapshot', iffStore.getAll()))
+
+  ipcMain.on('iffAdd', (event: any, payload: IFFRecord) => iffStore.set(payload))
+
+  ipcMain.on('iffDelete', (event: any, payload: string) => iffStore.del(payload))
+
+  journal.on('ReceiveText', (e: ReceiveTextEvent, historical) => {
+    if (!historical) {
+      const record = iffStore.get(e.From)
+      if (record) {
+        targetIdentified(record)
+      }
+    }
+  })
+
+  journal.on('ShipTargeted', ({ PilotName }: ShipTargetedEvent, historical) => {
+    const pattern = /\$cmdr_decorate:#name=(.*);/
+    if (!historical && PilotName && pattern.test(PilotName)) {
+      const cmdr = PilotName.match(pattern)
+      if (cmdr && cmdr.length) {
+        const record = iffStore.get(cmdr[0])
+        if (record) {
+          targetIdentified(record)
+        }
+      }
+    }
+  })
 }
