@@ -2,7 +2,7 @@ import { app, BrowserWindow } from 'electron'
 import * as path from 'path'
 import * as url from 'url'
 import journal from './journal'
-import iffStore from './iffStore'
+import iffStore from './iff'
 import { Journal } from 'edjr'
 
 let win: BrowserWindow | null

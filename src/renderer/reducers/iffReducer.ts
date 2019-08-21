@@ -1,5 +1,5 @@
 import { Reducer } from 'redux'
-import { IFFRecord } from '../../main/iffStore'
+import { IFFRecord } from '../../main/iff/iffStore'
 import { ADD, DELETE, IFF_SNAPSHOT, IffAction } from '../actions/iffActions'
 
 export interface IffState {

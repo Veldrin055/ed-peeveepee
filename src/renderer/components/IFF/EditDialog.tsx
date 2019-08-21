@@ -1,4 +1,4 @@
-import { IFFLabel, IFFRecord } from '../../../main/iffStore'
+import { IFFLabel, IFFRecord } from '../../../main/iff/iffStore'
 import { WithStyles } from '@material-ui/styles'
 import * as React from 'react'
 import { createStyles, Theme, withStyles } from '@material-ui/core'

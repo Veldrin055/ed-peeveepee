@@ -56,14 +56,26 @@ const Cmdr: React.FunctionComponent<Props> = ({ cmdr }) => {
       <Grid container={true} component="div" className={classes.container} direction="column">
         <Paper className={classes.paper}>
           <Grid container={true}>
-            <Typography variant="body1">CMDR {cmdr.name}</Typography>
-            <Typography variant="body1">Rank {cmdr.rank}</Typography>
-            <Typography variant="body1">
-              Location {cmdr.location.starSystem} / {cmdr.location.body}
-            </Typography>
-            <Typography variant="body1">KDR {kdr(cmdr)}</Typography>
-            <Typography variant="body1">Total Kills {cmdr.totalKills}</Typography>
-            <Typography variant="body1">Total Deaths {cmdr.totalDeaths}</Typography>
+            <Grid item xs={6}>
+              <Typography variant="body1">CMDR {cmdr.name}</Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <Typography variant="body1">Rank {cmdr.rank}</Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="body1">
+                Location {cmdr.location.starSystem} / {cmdr.location.body}
+              </Typography>
+            </Grid>
+            <Grid item xs={4}>
+              <Typography variant="body1">KDR {kdr(cmdr)}</Typography>
+            </Grid>
+            <Grid item xs={4}>
+              <Typography variant="body1">Total Kills {cmdr.totalKills}</Typography>
+            </Grid>
+            <Grid item xs={4}>
+              <Typography variant="body1">Total Deaths {cmdr.totalDeaths}</Typography>
+            </Grid>
           </Grid>
         </Paper>
         <Grid className={classes.combatLog} component="div">

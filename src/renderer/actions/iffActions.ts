@@ -1,5 +1,5 @@
 import { Action, ActionCreator } from 'redux'
-import { IFFRecord } from '../../main/iffStore'
+import { IFFRecord } from '../../main/iff/iffStore'
 
 export const IFF_SNAPSHOT = 'IFF_SNAPSHOT'
 export const ADD = 'ADD'

@@ -4,7 +4,7 @@ import IFF from '../components/IFF'
 import { RootState } from '../reducers'
 import { Dispatch } from 'redux'
 import { iffAdd, iffDelete } from '../actions/iffActions'
-import { IFFRecord } from '../../main/iffStore'
+import { IFFRecord } from '../../main/iff/iffStore'
 
 const mapStateToProps = ({ iff }: RootState) => ({ iff: iff.iff })
 const mapDispatchToProps = (dispatch: Dispatch) => ({

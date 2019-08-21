@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { IFFLabel, IFFRecord } from '../../../main/iffStore'
+import { IFFLabel, IFFRecord } from '../../../main/iff/iffStore'
 import { createStyles, List, Theme, withStyles } from '@material-ui/core'
 import Target from './Target'
 import Neutral from './Neutral'
