@@ -34,7 +34,7 @@ let currentLocation: Location
 export default ({ webContents }: BrowserWindow) => {
   const journal = new Journal()
 
-  const locationUpdate = (starSystemEvent: LocationEvent) => {
+  const locationUpdate = (starSystemEvent: LocationEvent, historical: boolean) => {
     const location: Location = {
       starSystem: starSystemEvent.StarSystem,
       body: starSystemEvent.Body,
@@ -45,12 +45,14 @@ export default ({ webContents }: BrowserWindow) => {
       },
     }
     currentLocation = location
-    webContents.send('location', location)
+    if (!historical) {
+      webContents.send('location', location)
+    }
   }
 
   // location update
-  journal.on('Location', (e: LocationEvent) => locationUpdate(e))
-  journal.on('FSDJump', (e: LocationEvent) => locationUpdate(e))
+  journal.on('Location', (e: LocationEvent, historical) => locationUpdate(e, historical))
+  journal.on('FSDJump', (e: LocationEvent, historical) => locationUpdate(e, historical))
 
   // load game
   journal.on('LoadGame', ({ Commander }) => webContents.send('loadGame', { name: Commander }))
@@ -101,7 +103,9 @@ export default ({ webContents }: BrowserWindow) => {
   })
 
   // Scan journal once UI is ready
-  webContents.on('dom-ready', () => journal.scan({ fromBeginning: true }))
+  webContents.on('dom-ready', () =>
+    journal.scan({ fromBeginning: true }, () => webContents.send('location', currentLocation))
+  )
 
   return journal
 }

@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { AppContainer } from 'react-hot-loader'
 import 'typeface-sintony'
-import './assets/EUROCAPS'
+import './assets/EUROCAPS.ttf'
 
 import Application from './components/Application'
 import store from './store'
