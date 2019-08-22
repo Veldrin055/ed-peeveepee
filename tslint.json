@@ -7,7 +7,7 @@
     ],
     "jsRules": {},
     "rules": {
-        "max-line-length": [true, 240],
+        "max-line-length": false,
         "trailing-comma": false,
         "semicolon": false,
         "ter-indent": [

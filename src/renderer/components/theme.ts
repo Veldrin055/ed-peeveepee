@@ -11,7 +11,7 @@ const palette = createPalette({
   },
 })
 
-const typography = createTypography(palette, { fontFamily: ['Sintony'].join(',') })
+const typography = createTypography(palette, { fontFamily: ['Sintony', 'Share Tech Mono'].join(',') })
 
 export default createMuiTheme({
   palette,

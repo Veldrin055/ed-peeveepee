@@ -17,13 +17,25 @@ export interface Props {
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    '@global': {
+      '*::-webkit-scrollbar': {
+        width: '0.8em',
+      },
+      '*::-webkit-scrollbar-track': {
+        '-webkit-box-shadow': 'inset 0 0 6px rgba(0,0,0,0.00)',
+      },
+      '*::-webkit-scrollbar-thumb': {
+        backgroundColor: 'rgba(0,0,0,.3)',
+        outline: '1px solid slategrey',
+        borderRadius: 6,
+      },
+    },
     paper: {
       width: '100%',
       marginTop: theme.spacing(3),
       overflowX: 'hidden',
       height: '100%',
-      maxHeight: 480,
-      flexGrow: 1,
+      maxHeight: '59vh',
       alignItems: 'centre',
     },
     table: {
@@ -36,6 +48,13 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     tableBody: {
       overflowY: 'auto',
+    },
+    tableClicky: {
+      cursor: 'pointer',
+      '&:hover': {
+        color: theme.palette.primary.dark,
+        transition: '0.3s',
+      },
     },
   })
 )
@@ -60,6 +79,7 @@ const CombatLog: React.FunctionComponent<Props> = ({ combatLog, openDialog }) =>
               <TableRow key={event.timestamp.toString()}>
                 <TableCell>{event.event}</TableCell>
                 <TableCell
+                  className={classes.tableClicky}
                   onClick={() =>
                     openDialog &&
                     openDialog({ name: event.name, events: combatLog.filter(ev => ev.name === event.name) })

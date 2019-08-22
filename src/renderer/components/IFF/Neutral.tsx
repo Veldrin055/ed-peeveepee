@@ -1,10 +1,14 @@
 import * as React from 'react'
+import { SvgIcon } from '@material-ui/core'
 
 const Neutral = (props: any) => (
-  <svg width={1830} height={380.909} {...props}>
-    <circle cx={915} cy={190.454} r={190.454} />
-    <path d="M0 100.909h452v180H0zM1378 100.909h452v180h-452z" />
-  </svg>
+  <SvgIcon width="1830px" height="380.909px" viewBox="0 0 1830 380.909" {...props}>
+    <circle cx="915" cy="190.454" r="190.454" />
+    <g>
+      <rect y="100.909" width="452" height="180" />
+      <rect x="1378" y="100.909" width="452" height="180" />
+    </g>
+  </SvgIcon>
 )
 
 export default Neutral

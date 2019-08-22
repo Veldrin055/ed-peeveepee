@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { IFFLabel, IFFRecord } from '../../../main/iff/iffStore'
-import { createStyles, List, Theme, withStyles } from '@material-ui/core'
+import { createStyles, List, Theme, withStyles, SvgIcon } from '@material-ui/core'
 import Target from './Target'
 import Neutral from './Neutral'
 import ListItem from '@material-ui/core/ListItem'
@@ -51,21 +51,42 @@ const styles = (theme: Theme) =>
     addButton: {
       color: theme.palette.primary.dark,
     },
+    text: {
+      color: 'white',
+    },
+    hover: {
+      position: 'relative',
+
+      '&:hover &__no-hover': {
+        opacity: 0,
+      },
+      '&:hover &__hover': {
+        opacity: 1,
+      },
+      '&__hover': {
+        position: 'absolute',
+        top: 0,
+        opacity: 0,
+      },
+      '&__no-hover': {
+        opacity: 1,
+      },
+    },
   })
 
 const IffListItem = withStyles(styles)(({ iff, del, edit, classes }: IFFListItemProps) => {
   const handleEdit = () => edit(iff)
   const handleDel = () => del(iff.name)
   return (
-    <ListItem component="div">
+    <ListItem component="div" className={classes.hover}>
       <ListItemIcon>
         {(iff.label === IFFLabel.ally && <Favorite className={classes.favourite} />) ||
-          (iff.label === IFFLabel.enemy && <Target className={classes.enemy} height={64} width={64} />) || (
-            <Neutral className={classes.neutral} height={64} width={64} />
+          (iff.label === IFFLabel.enemy && <Target className={classes.enemy} />) || (
+            <Neutral className={classes.neutral} />
           )}
       </ListItemIcon>
       <ListItemText primary={iff.name} secondary={iff.notes} />
-      <ListItemSecondaryAction>
+      <ListItemSecondaryAction className="hover__hover">
         <IconButton onClick={handleEdit}>
           <Edit />
         </IconButton>
@@ -103,14 +124,14 @@ const Iff = withStyles(styles)(({ iff, add, del, classes }: IFFProps) => {
         Add
       </Button>
       {(!iff || !iff.length) && (
-        <Typography variant="body2">
+        <Typography variant="body2" className={classes.text}>
           {`Add the names of CMDRs that you want to be immediately notified about when you interact with them (scan, interdict).
   
         This can be useful to prevent accidentally targeting an ally, or if someone from your Kill On Sight list drops by!
         Omit the 'CMDR' prefix when adding a new name. Names are checked case-insensitive.`}
         </Typography>
       )}
-      <List component="div">
+      <List>
         {iff.map(record => (
           <IffListItem key={record.name} iff={record} del={del} edit={handleOpen} />
         ))}

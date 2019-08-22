@@ -24,19 +24,25 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
     },
     paper: {
-      width: '100%',
-      marginTop: theme.spacing(3),
+      marginTop: theme.spacing(16),
       padding: theme.spacing(4),
-      overflowX: 'initial',
-      margin: 12,
     },
     typography: {
-      marginTop: theme.spacing(6),
-      // marginLeft: theme.spacing(6),
+      // marginTop: theme.spacing(6),
       color: 'white',
       float: 'left',
+      fontFamily: 'Share Tech Mono',
     },
-    combatLog: {
+    panel: {
+      width: '100%',
+      // padding: '1rem',
+      position: 'relative',
+      background: 'linear-gradient(to right, red, purple)',
+      padding: 3,
+      borderRadius: 6,
+    },
+    spacer: {
+      height: 48,
       width: '100%',
     },
   })
@@ -54,31 +60,37 @@ const Cmdr: React.FunctionComponent<Props> = ({ cmdr }) => {
   return (
     <div className={classes.root}>
       <Grid container={true} component="div" className={classes.container} direction="column">
-        <Paper className={classes.paper}>
-          <Grid container={true}>
-            <Grid item xs={6}>
-              <Typography variant="body1">CMDR {cmdr.name}</Typography>
+        <Grid className={classes.panel}>
+          <Typography variant="h6" className={classes.typography}>
+            CMDR
+          </Typography>
+          <Paper className={classes.paper}>
+            <Grid container={true}>
+              <Grid item xs={6}>
+                <Typography variant="body1">CMDR {cmdr.name}</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography variant="body1">Rank {cmdr.rank}</Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="body1">
+                  Location {cmdr.location.starSystem} / {cmdr.location.body}
+                </Typography>
+              </Grid>
+              <Grid item xs={4}>
+                <Typography variant="body1">KDR {kdr(cmdr)}</Typography>
+              </Grid>
+              <Grid item xs={4}>
+                <Typography variant="body1">Total Kills {cmdr.totalKills}</Typography>
+              </Grid>
+              <Grid item xs={4}>
+                <Typography variant="body1">Total Deaths {cmdr.totalDeaths}</Typography>
+              </Grid>
             </Grid>
-            <Grid item xs={6}>
-              <Typography variant="body1">Rank {cmdr.rank}</Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="body1">
-                Location {cmdr.location.starSystem} / {cmdr.location.body}
-              </Typography>
-            </Grid>
-            <Grid item xs={4}>
-              <Typography variant="body1">KDR {kdr(cmdr)}</Typography>
-            </Grid>
-            <Grid item xs={4}>
-              <Typography variant="body1">Total Kills {cmdr.totalKills}</Typography>
-            </Grid>
-            <Grid item xs={4}>
-              <Typography variant="body1">Total Deaths {cmdr.totalDeaths}</Typography>
-            </Grid>
-          </Grid>
-        </Paper>
-        <Grid className={classes.combatLog} component="div">
+          </Paper>
+        </Grid>
+        <Grid className={classes.spacer} component="div" />
+        <Grid className={classes.panel} component="div">
           <Typography variant="h6" className={classes.typography}>
             Combat Log
           </Typography>

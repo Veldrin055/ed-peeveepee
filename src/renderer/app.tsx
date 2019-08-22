@@ -3,10 +3,11 @@ import * as ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { AppContainer } from 'react-hot-loader'
 import 'typeface-sintony'
+import 'typeface-share-tech-mono'
 
-import Application from './components/Application'
 import store from './store'
 import journalActionDispatcher from './journalActionDispatcher'
+import Application from './containers/ApplicationContainer'
 
 // Create main element
 document.body.style.margin = '0'
@@ -31,4 +32,10 @@ const render = (Component: () => JSX.Element) => {
   )
 }
 
-render(Application)
+const AppComponent = () => (
+  <React.Fragment>
+    <Application />
+  </React.Fragment>
+)
+
+render(AppComponent)

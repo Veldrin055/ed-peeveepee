@@ -29,7 +29,9 @@ const useStyles = makeStyles((theme: Theme) =>
     tab: {
       '-webkit-app-region': 'no-drag',
     },
-    title: {},
+    title: {
+      fontFamily: 'Share Tech Mono',
+    },
     sectionDesktop: {
       '-webkit-app-region': 'no-drag',
       display: 'flex',
