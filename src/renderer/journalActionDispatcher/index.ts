@@ -2,7 +2,7 @@ import { ipcRenderer } from 'electron'
 import { death, kill, loadGame, locationChange, rank } from '../actions/cmdrStateActions'
 import { Store } from 'redux'
 import { DeathEventMsg, KillEvent, LoadGameEvent, RankEvent } from '../../common/types'
-import { IFFRecord } from '../../main/iffStore'
+import { IFFRecord } from '../../main/iff/iffStore'
 import { iffSnapshot } from '../actions/iffActions'
 
 export default ({ dispatch }: Store) => {

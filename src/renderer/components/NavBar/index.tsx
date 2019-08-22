@@ -29,9 +29,7 @@ const useStyles = makeStyles((theme: Theme) =>
     tab: {
       '-webkit-app-region': 'no-drag',
     },
-    title: {
-      fontFamily: 'Euro Caps',
-    },
+    title: {},
     sectionDesktop: {
       '-webkit-app-region': 'no-drag',
       display: 'flex',

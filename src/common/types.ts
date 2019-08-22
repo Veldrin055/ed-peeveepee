@@ -91,6 +91,21 @@ export interface ReceiveTextEvent {
   Channel: string
 }
 
+export interface SendTextEvent {
+  To: string
+  Message: string
+}
+
+export interface InterdictionEvent {
+  IsPlayer: boolean
+  Interdicted: string
+}
+
+export interface InterdictedEvent {
+  IsPlayer: boolean
+  Interdictor: string
+}
+
 export interface ShipTargetedEvent {
   PilotName?: string
 }
