@@ -135,7 +135,6 @@ const EditDialog = withStyles(styles)(({ open, handleClose, save, record, classe
               className={classes.textField}
             />
             <TextField
-              autoFocus
               margin="dense"
               name="notes"
               label="Notes (optional)"

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { IFFLabel, IFFRecord } from '../../../main/iff/iffStore'
-import { createStyles, List, Theme, withStyles, SvgIcon } from '@material-ui/core'
+import { createStyles, List, Theme, withStyles, Divider } from '@material-ui/core'
 import Target from './Target'
 import Neutral from './Neutral'
 import ListItem from '@material-ui/core/ListItem'
@@ -133,7 +133,10 @@ const Iff = withStyles(styles)(({ iff, add, del, classes }: IFFProps) => {
       )}
       <List>
         {iff.map(record => (
-          <IffListItem key={record.name} iff={record} del={del} edit={handleOpen} />
+          <React.Fragment key={record.name}>
+            <Divider variant="inset" component="li" />
+            <IffListItem iff={record} del={del} edit={handleOpen} />
+          </React.Fragment>
         ))}
       </List>
     </div>

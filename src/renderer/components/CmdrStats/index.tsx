@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: theme.spacing(4),
     },
     typography: {
-      // marginTop: theme.spacing(6),
+      marginLeft: theme.spacing(6),
       color: 'white',
       float: 'left',
       fontFamily: 'Share Tech Mono',
