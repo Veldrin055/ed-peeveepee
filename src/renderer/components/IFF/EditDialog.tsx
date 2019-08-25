@@ -25,7 +25,7 @@ export interface EditDialogProps extends WithStyles<typeof styles> {
   record?: IFFRecord
 }
 
-export interface EditDialogTitleProps extends WithStyles<typeof styles> {
+interface EditDialogTitleProps extends WithStyles<typeof styles> {
   children: React.ReactNode
   onClose: () => void
 }
@@ -90,9 +90,7 @@ const EditDialog = withStyles(styles)(({ open, handleClose, save, record, classe
   }
   const [values, setValues] = React.useState(defaultState)
 
-  React.useEffect(() => {
-    setValues(record ? record : defaultState)
-  }, [record])
+  React.useEffect(() => setValues(record ? record : defaultState), [record])
 
   const handleChange = (e: React.ChangeEvent<{ name?: string; value: unknown }>) => {
     const { name, value } = e.target
@@ -107,6 +105,7 @@ const EditDialog = withStyles(styles)(({ open, handleClose, save, record, classe
     save(originalName, { name, label, notes })
     handleClose()
   }
+
   return (
     <Dialog onClose={handleClose} open={open} maxWidth="md">
       <DialogTitle onClose={handleClose}>{record ? `Edit ${record.name}` : 'New'}</DialogTitle>

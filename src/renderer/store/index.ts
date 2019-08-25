@@ -3,10 +3,10 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 
 import { rootReducer, RootState } from '../reducers'
 import { addIff } from '../middleware/iffMiddleware'
+import { settingsMiddlware } from '../middleware/settingsMiddleware'
 
 const configureStore = (initialState?: RootState): Store<RootState | undefined> => {
-  const middlewares: any[] = [addIff]
-  const enhancer = composeWithDevTools(applyMiddleware(...middlewares))
+  const enhancer = composeWithDevTools(applyMiddleware(...[addIff, settingsMiddlware]))
   return createStore(rootReducer, initialState, enhancer)
 }
 

@@ -81,7 +81,7 @@
     "name": "Your name",
     "email": "Your email"
   },
-  "license": "SEE LICENSE",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/Robinfr/electron-react-typescript/issues"
   },

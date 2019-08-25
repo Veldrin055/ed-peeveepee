@@ -70,6 +70,10 @@ module.exports = merge.smart(baseConfig, {
                     }
                 },
             },
+            {
+                test: /\.wav?$/,
+                loader: 'file-loader'
+            },
             // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
             {
                 enforce: 'pre',

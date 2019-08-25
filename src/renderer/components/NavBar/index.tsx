@@ -10,6 +10,7 @@ import CloseIcon from '@material-ui/icons/Close'
 import MinimizeIcon from '@material-ui/icons/Minimize'
 import MaximizeIcon from '@material-ui/icons/CropSquare'
 import { Tab, Tabs } from '@material-ui/core'
+import Settings from '../../containers/SettingsContainer'
 
 export interface NavBarProps {
   value: number
@@ -70,13 +71,19 @@ const maximize = () => {
 
 export default ({ value, handleChange }: NavBarProps) => {
   const classes = useStyles()
+  const [settingsOpen, setSettingsOpen] = React.useState(false)
+
+  const handleClose = () => setSettingsOpen(false)
+
+  const openSettings = () => setSettingsOpen(true)
 
   return (
     <div className={classes.root}>
+      <Settings open={settingsOpen} handleClose={handleClose} />
       <AppBar position="static">
         <Toolbar>
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="Open drawer">
-            <MenuIcon />
+            <MenuIcon onClick={openSettings} />
           </IconButton>
           <Typography className={classes.title} variant="h6" noWrap>
             ED: PvP
