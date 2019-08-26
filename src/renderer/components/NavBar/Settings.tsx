@@ -5,14 +5,13 @@ import { createStyles, Theme, withStyles } from '@material-ui/core'
 import MuiDialogTitle from '@material-ui/core/DialogTitle/DialogTitle'
 import Typography from '@material-ui/core/Typography'
 import IconButton from '@material-ui/core/IconButton'
-import CloseIcon from '@material-ui/core/SvgIcon/SvgIcon'
 import MuiDialogContent from '@material-ui/core/DialogContent/DialogContent'
 import Grid from '@material-ui/core/Grid'
 import DialogActions from '@material-ui/core/DialogActions'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
 import Slider from '@material-ui/core/Slider'
-import { VolumeDown, VolumeUp } from '@material-ui/icons'
+import { VolumeDown, VolumeUp, Close } from '@material-ui/icons'
 
 export interface SettingsDialogProps extends WithStyles<typeof styles> {
   open: boolean
@@ -55,7 +54,7 @@ const DialogTitle = withStyles(styles)((props: SettingsDialogTitleProps) => {
       <Typography variant="h6">{children}</Typography>
       {onClose ? (
         <IconButton aria-label="Close" className={classes.closeButton} onClick={onClose}>
-          <CloseIcon />
+          <Close />
         </IconButton>
       ) : null}
     </MuiDialogTitle>

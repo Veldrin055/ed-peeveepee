@@ -87,8 +87,8 @@ export default ({ value, handleChange }: NavBarProps) => {
       <Settings open={settingsOpen} handleClose={handleClose} />
       <AppBar position="static">
         <Toolbar>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="Open drawer">
-            <MenuIcon onClick={openSettings} />
+          <IconButton edge="start" className={classes.menuButton} color="inherit" onClick={openSettings}>
+            <MenuIcon />
           </IconButton>
           <Typography className={classes.title} variant="h6" noWrap>
             ED: PvP
