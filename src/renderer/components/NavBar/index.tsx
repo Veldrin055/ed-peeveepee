@@ -9,6 +9,7 @@ import MenuIcon from '@material-ui/icons/Menu'
 import CloseIcon from '@material-ui/icons/Close'
 import MinimizeIcon from '@material-ui/icons/Minimize'
 import MaximizeIcon from '@material-ui/icons/CropSquare'
+import FilterNoneIcon from '@material-ui/icons/FilterNone'
 import { Tab, Tabs } from '@material-ui/core'
 import Settings from '../../containers/SettingsContainer'
 
@@ -48,34 +49,38 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-const close = () => {
-  const window = remote.BrowserWindow.getFocusedWindow()
-  if (window) {
-    window.close()
-  }
-}
-
-const minimize = () => {
-  const window = remote.BrowserWindow.getFocusedWindow()
-  if (window) {
-    window.minimize()
-  }
-}
-
-const maximize = () => {
-  const window = remote.BrowserWindow.getFocusedWindow()
-  if (window) {
-    window.maximize()
-  }
-}
-
 export default ({ value, handleChange }: NavBarProps) => {
   const classes = useStyles()
+  const window = remote.BrowserWindow.getFocusedWindow()
   const [settingsOpen, setSettingsOpen] = React.useState(false)
+  const [maximized, maximize] = React.useState(window ? window.isMaximized() : false)
 
   const handleClose = () => setSettingsOpen(false)
 
   const openSettings = () => setSettingsOpen(true)
+
+  const close = () => {
+    if (window) {
+      window.close()
+    }
+  }
+
+  const minimize = () => {
+    if (window) {
+      window.minimize()
+    }
+  }
+
+  const maximizeOrRestore = () => {
+    if (window) {
+      if (window.isMaximized()) {
+        window.unmaximize()
+      } else {
+        window.maximize()
+      }
+      maximize(window.isMaximized())
+    }
+  }
 
   return (
     <div className={classes.root}>
@@ -99,8 +104,8 @@ export default ({ value, handleChange }: NavBarProps) => {
             <IconButton className={classes.controlButton} color="inherit" onClick={minimize}>
               <MinimizeIcon />
             </IconButton>
-            <IconButton className={classes.controlButton} color="inherit" onClick={maximize}>
-              <MaximizeIcon />
+            <IconButton className={classes.controlButton} color="inherit" onClick={maximizeOrRestore}>
+              {maximized ? <FilterNoneIcon /> : <MaximizeIcon />}
             </IconButton>
             <IconButton
               className={classes.controlButton}
