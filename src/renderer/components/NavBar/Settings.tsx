@@ -11,7 +11,7 @@ import DialogActions from '@material-ui/core/DialogActions'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
 import Slider from '@material-ui/core/Slider'
-import { VolumeDown, VolumeUp, Close } from '@material-ui/icons'
+import { VolumeOff, VolumeUp, Close } from '@material-ui/icons'
 
 export interface SettingsDialogProps extends WithStyles<typeof styles> {
   open: boolean
@@ -91,14 +91,15 @@ const SettingsDialog = withStyles(styles)(
         <DialogContent dividers>
           <form className={classes.root} autoComplete="off">
             <Grid container spacing={4}>
-              <Grid item>
-                <VolumeDown />
-              </Grid>
+              <Grid item>{settingsState.volume > 0 ? <VolumeUp /> : <VolumeOff />}</Grid>
               <Grid item xs>
-                <Slider value={settingsState.volume} onChange={handleChange} aria-labelledby="continuous-slider" />
-              </Grid>
-              <Grid item>
-                <VolumeUp />
+                <Slider
+                  value={settingsState.volume}
+                  onChange={handleChange}
+                  aria-labelledby="continuous-slider"
+                  min={0}
+                  max={100}
+                />
               </Grid>
             </Grid>
           </form>

@@ -3,6 +3,7 @@ import * as path from 'path'
 import * as url from 'url'
 import journal from './journal'
 import iffStore from './iff'
+import settings from './settings'
 import { Journal } from 'edjr'
 
 let win: BrowserWindow | null
@@ -34,6 +35,7 @@ const createWindow = async () => {
   })
   jrnl = journal(win)
   iffStore(jrnl, win)
+  settings(win)
 
   if (process.env.NODE_ENV !== 'production') {
     process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = '1'

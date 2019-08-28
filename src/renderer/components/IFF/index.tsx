@@ -87,10 +87,10 @@ const IffListItem = withStyles(styles)(({ iff, del, edit, classes }: IFFListItem
       </ListItemIcon>
       <ListItemText primary={iff.name} secondary={iff.notes} />
       <ListItemSecondaryAction className="hover__hover">
-        <IconButton onClick={handleEdit}>
+        <IconButton onClick={handleEdit} color="primary">
           <Edit />
         </IconButton>
-        <IconButton onClick={handleDel}>
+        <IconButton onClick={handleDel} color="secondary">
           <Delete />
         </IconButton>
       </ListItemSecondaryAction>
@@ -132,10 +132,10 @@ const Iff = withStyles(styles)(({ iff, add, del, classes }: IFFProps) => {
         </Typography>
       )}
       <List>
-        {iff.map(record => (
+        {iff.map((record, index) => (
           <React.Fragment key={record.name}>
-            <Divider variant="inset" component="li" />
             <IffListItem iff={record} del={del} edit={handleOpen} />
+            {index < iff.length - 1 && <Divider variant="inset" component="li" />}
           </React.Fragment>
         ))}
       </List>
