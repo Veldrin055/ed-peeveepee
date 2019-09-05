@@ -1,6 +1,6 @@
 import { Journal } from 'edjr'
 import { BrowserWindow } from 'electron'
-import { CombatRanks, Killer, KillEvent, Location, PvpEventType } from '../common/types'
+import { CombatRanks, Killer, KillEvent, Location, PvpEventType, CombatRank } from '../common/types'
 
 interface JournalEvent {
   readonly timestamp: Date
@@ -20,7 +20,7 @@ interface PvPKillEvent extends JournalEvent {
 
 interface DiedEvent extends JournalEvent {
   readonly KillerName?: string
-  readonly KillerRank: number
+  readonly KillerRank: CombatRank
   readonly Killers?: WingKiller[]
 }
 
@@ -82,7 +82,7 @@ export default ({ webContents }: BrowserWindow) => {
       killers = [
         {
           name: e.KillerName,
-          combatRank: CombatRanks[e.KillerRank],
+          combatRank: e.KillerRank,
         },
       ]
     } else if (e.Killers) {
@@ -91,7 +91,7 @@ export default ({ webContents }: BrowserWindow) => {
         combatRank: CombatRanks[killer.Rank],
       }))
     }
-    if (killers) {
+    if (killers.length) {
       webContents.send('death', {
         killers,
         historical,
