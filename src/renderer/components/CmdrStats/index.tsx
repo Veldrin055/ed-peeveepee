@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme: Theme) =>
       width: '100%',
       // padding: '1rem',
       position: 'relative',
-      background: 'linear-gradient(to right, red, purple)',
+      background: 'linear-gradient(to right, purple, orange)',
       padding: 3,
       borderRadius: 6,
     },

@@ -81,7 +81,7 @@ export default ({ webContents }: BrowserWindow) => {
     if (e.KillerName && e.KillerName.startsWith('Cmdr')) {
       killers = [
         {
-          name: e.KillerName,
+          name: e.KillerName.slice(5),
           combatRank: e.KillerRank,
         },
       ]
