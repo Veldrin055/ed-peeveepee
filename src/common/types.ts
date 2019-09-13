@@ -109,3 +109,8 @@ export interface InterdictedEvent {
 export interface ShipTargetedEvent {
   PilotName?: string
 }
+
+export interface BeaconMessage {
+  cmdr: string
+  location: Location
+}

@@ -1,8 +1,7 @@
-import { Reducer } from 'redux';
-import { CmdrState, CombatRank, PvpEventType } from '../../common/types';
+import { Reducer } from 'redux'
+import { CmdrState, CombatRank } from '../../common/types'
 
-import { CmdrStateAction, DEATH, KILL, LOAD_GAME, LOCATION_CHANGE, RANK } from '../actions/cmdrStateActions';
-import { statement } from '@babel/template';
+import { CmdrStateAction, DEATH, KILL, LOAD_GAME, LOCATION_CHANGE, RANK } from '../actions/cmdrStateActions'
 
 const defaultState: CmdrState = {
   name: 'The Unknown CMDR',
@@ -15,10 +14,10 @@ const defaultState: CmdrState = {
     position: {
       x: 0,
       y: 0,
-      z: 0
-    }
-  }
-};
+      z: 0,
+    },
+  },
+}
 
 export const cmdrStateReducer: Reducer<CmdrState, CmdrStateAction> = (
   state = defaultState,
@@ -28,29 +27,29 @@ export const cmdrStateReducer: Reducer<CmdrState, CmdrStateAction> = (
     case LOAD_GAME:
       return {
         ...state,
-        name: action.payload
-      };
+        name: action.payload,
+      }
     case KILL:
       return {
         ...state,
-        totalKills: state.totalKills + 1
-      };
+        totalKills: state.totalKills + 1,
+      }
     case DEATH:
       return {
         ...state,
-        totalDeaths: state.totalDeaths + 1
-      };
+        totalDeaths: state.totalDeaths + 1,
+      }
     case LOCATION_CHANGE:
       return {
         ...state,
-        location: action.payload
-      };
+        location: action.payload,
+      }
     case RANK:
       return {
         ...state,
-        rank: action.payload
-      };
+        rank: action.payload,
+      }
     default:
-      return state;
+      return state
   }
-};
+}

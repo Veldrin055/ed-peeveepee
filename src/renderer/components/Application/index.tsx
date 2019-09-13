@@ -5,9 +5,9 @@ import NavBar from '../NavBar'
 import theme from '../theme'
 import Cmdr from '../../containers/CmdrContainer'
 import IFF from '../../containers/IffContainer'
+import Beacon from '../../containers/BeaconContainer'
 import Loading from './Loading'
 import { Typography } from '@material-ui/core'
-import Panel from '../Panel'
 
 interface PageProps {
   children?: React.ReactNode
@@ -48,9 +48,7 @@ const Application = ({ ready = false }: ApplicationProps) => {
             )}
             {value === 2 && (
               <Page>
-                <Panel label="Testing">
-                  <p> test</p>
-                </Panel>
+                <Beacon />
               </Page>
             )}
             {value === 3 && (

@@ -4,9 +4,10 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import { rootReducer, RootState } from '../reducers'
 import { addIff } from '../middleware/iffMiddleware'
 import { settingsMiddlware } from '../middleware/settingsMiddleware'
+import { beaconMiddleware } from '../middleware/beaconMiddleware'
 
 const configureStore = (initialState?: RootState): Store<RootState | undefined> => {
-  const enhancer = composeWithDevTools(applyMiddleware(...[addIff, settingsMiddlware]))
+  const enhancer = composeWithDevTools(applyMiddleware(...[addIff, settingsMiddlware, beaconMiddleware]))
   return createStore(rootReducer, initialState, enhancer)
 }
 
