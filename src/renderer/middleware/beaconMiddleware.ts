@@ -2,7 +2,7 @@ import { Middleware } from 'redux'
 import { LOCATION_CHANGE, LocationChangeAction } from '../actions/cmdrStateActions'
 import { beaconAdd, beaconRemove } from '../actions/beaconActions'
 
-const ws = new WebSocket('ws://localhost:3001')
+const ws = new WebSocket('ws://ed-pvp-server.herokuapp.com')
 
 export const beaconMiddleware: Middleware = store => {
   ws.onmessage = ({ data }) => {

@@ -53,10 +53,10 @@
     }
   },
   "build": {
-    "productName": "ProductName",
-    "appId": "org.your.productname",
+    "productName": "ED PvP",
+    "appId": "veldrin055.ed.pvp",
     "mac": {
-      "category": "your.app.category.type"
+      "category": "elite.dangerous.pvp"
     },
     "directories": {
       "output": "release"
@@ -64,7 +64,8 @@
     "files": [
       "dist/",
       "node_modules/",
-      "package.json"
+      "package.json",
+      "build/icon.*"
     ],
     "linux": {
       "target": "deb"
@@ -75,17 +76,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com:Robinfr/electron-react-typescript.git"
+    "url": "git+ssh://git@github.com:veldrin055/ed-peeveepee.git"
   },
   "author": {
-    "name": "Your name",
-    "email": "Your email"
+    "name": "Daniel Morrison",
+    "email": "veldrin055@gmail.com"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Robinfr/electron-react-typescript/issues"
+    "url": "https://github.com/veldrin055/ed-peeveepee/issues"
   },
-  "homepage": "https://github.com/Robinfr/electron-react-typescript",
+  "homepage": "https://github.com/veldrin055/ed-peeveepee",
   "devDependencies": {
     "@babel/core": "^7.4.5",
     "@babel/plugin-proposal-class-properties": "^7.4.4",
