@@ -26,12 +26,11 @@ const createWindow = async () => {
     width: 800,
     height: 830,
     frame: false,
-    // transparent: true,
     resizable: true,
-    // show: false,
     hasShadow: true,
     thickFrame: true,
     backgroundColor: '#616161',
+    title: 'ED: PvP',
   })
   jrnl = journal(win)
   iffStore(jrnl, win)

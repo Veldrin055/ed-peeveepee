@@ -1,19 +1,13 @@
 import { Middleware } from 'redux'
 import { LOCATION_CHANGE, LocationChangeAction } from '../actions/cmdrStateActions'
 import { beaconAdd, beaconRemove } from '../actions/beaconActions'
+import Server from '../server'
 
-const ws = new WebSocket('ws://ed-pvp-server.herokuapp.com')
+const server = new Server()
 
 export const beaconMiddleware: Middleware = store => {
-  ws.onmessage = ({ data }) => {
-    const msg = JSON.parse(data)
-    if (msg.type === 'beacon') {
-      store.dispatch(beaconAdd(msg.msg))
-    }
-    if (msg.type === 'beacon_remove') {
-      store.dispatch(beaconRemove(msg.msg))
-    }
-  }
+  server.onmessage('beacon', msg => store.dispatch(beaconAdd(msg)))
+  server.onmessage('beacon_remove', msg => store.dispatch(beaconRemove(msg)))
 
   return next => action => {
     if (action.type === LOCATION_CHANGE) {
@@ -26,7 +20,7 @@ export const beaconMiddleware: Middleware = store => {
         },
       }
 
-      ws.send(JSON.stringify({ msg, type: 'beacon' }))
+      server.send({ msg, type: 'beacon' })
     }
     return next(action)
   }
