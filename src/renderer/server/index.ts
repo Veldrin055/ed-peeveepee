@@ -3,14 +3,15 @@ class Server {
   subscriptions: Map<string, (data: any) => void>
 
   constructor() {
-    this.ws = new WebSocket('ws://ed-pvp-server.herokuapp.com')
+    // this.ws = new WebSocket('ws://ed-pvp-server.herokuapp.com')
+    this.ws = new WebSocket('ws://localhost:3000')
     this.subscriptions = new Map()
     this.ws.onmessage = ({ data }) => {
       console.log('message received', data)
-      const msg = JSON.parse(data)
-      const sub = this.subscriptions.get(msg.type)
+      const { type, msg } = JSON.parse(data)
+      const sub = this.subscriptions.get(type)
       if (sub) {
-        sub(data.msg)
+        sub(msg)
       }
     }
   }

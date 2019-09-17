@@ -14,10 +14,7 @@ export const beaconMiddleware: Middleware = store => {
       const { payload } = action as LocationChangeAction
       const msg = {
         cmdr: store.getState().cmdr.name,
-        location: {
-          systemName: payload.starSystem,
-          ...payload.position,
-        },
+        location: { ...payload },
       }
 
       server.send({ msg, type: 'beacon' })
