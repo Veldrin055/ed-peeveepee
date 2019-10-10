@@ -43,27 +43,25 @@ const styles = (theme: Theme) =>
 const distance = (loc1: Coordinates, loc2: Coordinates) =>
   Math.sqrt(Math.pow(loc2.x - loc1.x, 2) + Math.pow(loc2.y - loc1.y, 2) + Math.pow(loc2.z - loc1.z, 2))
 
-const Beacon = ({ beacons, location }: BeaconProps) => {
-  return (
-    <div>
-      <List>
-        {beacons
-          .sort((e1, e2) => distance(location, e1.location.position) - distance(location, e2.location.position))
-          .map((beaconMsg, index) => (
-            <React.Fragment key={beaconMsg.cmdr}>
-              <ListItem>
-                <ListItemText
-                  primary={beaconMsg.cmdr}
-                  secondary={`${beaconMsg.location.starSystem} / ${beaconMsg.location.body}`}
-                />
-                <ListItemText primary={distance(location, beaconMsg.location.position)} />
-              </ListItem>
-              {index < beacons.length - 1 && <Divider variant="inset" component="li" />}
-            </React.Fragment>
-          ))}
-      </List>
-    </div>
-  )
-}
+const Beacon = ({ beacons, location }: BeaconProps) => (
+  <div>
+    <List>
+      {beacons
+        .sort((e1, e2) => distance(location, e1.location.position) - distance(location, e2.location.position))
+        .map((beaconMsg, index) => (
+          <React.Fragment key={beaconMsg.cmdr}>
+            <ListItem>
+              <ListItemText
+                primary={beaconMsg.cmdr}
+                secondary={`${beaconMsg.location.starSystem} / ${beaconMsg.location.body}`}
+              />
+              <ListItemText primary={`${distance(location, beaconMsg.location.position).toFixed(2)} LY`} />
+            </ListItem>
+            {index < beacons.length - 1 && <Divider variant="inset" component="li" />}
+          </React.Fragment>
+        ))}
+    </List>
+  </div>
+)
 
 export default Beacon
