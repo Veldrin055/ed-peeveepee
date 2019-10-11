@@ -1,9 +1,10 @@
 import * as React from 'react'
-import { createStyles, Divider, Theme } from '@material-ui/core'
+import { createStyles, Divider, Theme, Paper } from '@material-ui/core'
 import ListItem from '@material-ui/core/ListItem'
 import List from '@material-ui/core/List'
 import { BeaconMessage, Coordinates } from '../../../common/types'
 import ListItemText from '@material-ui/core/ListItemText'
+import { locationDisplay } from '../../util'
 
 // todo consider adding IFF as well, for highlighting
 interface BeaconProps {
@@ -44,24 +45,26 @@ const distance = (loc1: Coordinates, loc2: Coordinates) =>
   Math.sqrt(Math.pow(loc2.x - loc1.x, 2) + Math.pow(loc2.y - loc1.y, 2) + Math.pow(loc2.z - loc1.z, 2))
 
 const Beacon = ({ beacons, location }: BeaconProps) => (
-  <div>
-    <List>
-      {beacons
-        .sort((e1, e2) => distance(location, e1.location.position) - distance(location, e2.location.position))
-        .map((beaconMsg, index) => (
-          <React.Fragment key={beaconMsg.cmdr}>
-            <ListItem>
-              <ListItemText
-                primary={beaconMsg.cmdr}
-                secondary={`${beaconMsg.location.starSystem} / ${beaconMsg.location.body}`}
-              />
-              <ListItemText primary={`${distance(location, beaconMsg.location.position).toFixed(2)} LY`} />
-            </ListItem>
-            {index < beacons.length - 1 && <Divider variant="inset" component="li" />}
-          </React.Fragment>
-        ))}
-    </List>
-  </div>
+  <Paper>
+    {beacons && beacons.length ? (
+      <List>
+        {beacons
+          .map(beaconMsg => ({ beaconMsg, distance: distance(location, beaconMsg.location.position) }))
+          .sort((e1, e2) => e1.distance - e2.distance)
+          .map(({ beaconMsg, distance }, index) => (
+            <React.Fragment key={beaconMsg.cmdr}>
+              <ListItem>
+                <ListItemText primary={beaconMsg.cmdr} secondary={locationDisplay(beaconMsg.location)} />
+                <ListItemText primary={`${distance.toFixed(2)} LY`} />
+              </ListItem>
+              {index < beacons.length - 1 && <Divider variant="inset" component="li" />}
+            </React.Fragment>
+          ))}
+      </List>
+    ) : (
+      <p>No CMDRs found broadcasting</p>
+    )}
+  </Paper>
 )
 
 export default Beacon

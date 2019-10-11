@@ -5,6 +5,7 @@ import Paper from '@material-ui/core/Paper'
 import { CmdrState } from '../../../common/types'
 import { Typography } from '@material-ui/core'
 import CombatLog from '../../containers/CombatLogContainer'
+import { locationDisplay } from '../../util'
 
 export interface Props {
   cmdr: CmdrState
@@ -73,9 +74,7 @@ const Cmdr: React.FunctionComponent<Props> = ({ cmdr }) => {
                 <Typography variant="body1">Rank {cmdr.rank}</Typography>
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body1">
-                  Location {cmdr.location.starSystem} / {cmdr.location.body}
-                </Typography>
+                <Typography variant="body1">Location {locationDisplay(cmdr.location)}</Typography>
               </Grid>
               <Grid item xs={4}>
                 <Typography variant="body1">KDR {kdr(cmdr)}</Typography>
