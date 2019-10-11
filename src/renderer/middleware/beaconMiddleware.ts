@@ -1,13 +1,11 @@
 import { Middleware } from 'redux'
 import { LOCATION_CHANGE, LocationChangeAction } from '../actions/cmdrStateActions'
 import { beaconAdd, beaconRemove } from '../actions/beaconActions'
-import Server from '../server'
-
-const server = new Server()
+import server from '../server'
 
 export const beaconMiddleware: Middleware = store => {
-  server.onmessage('beacon', msg => store.dispatch(beaconAdd(msg)))
-  server.onmessage('beacon_remove', msg => store.dispatch(beaconRemove(msg)))
+  server.on('beacon', msg => store.dispatch(beaconAdd(msg)))
+  server.on('beacon_remove', msg => store.dispatch(beaconRemove(msg)))
 
   return next => action => {
     if (action.type === LOCATION_CHANGE) {

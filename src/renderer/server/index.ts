@@ -1,13 +1,14 @@
-class Server {
+import { EventEmitter } from 'events'
+
+class Server extends EventEmitter {
   private ws!: WebSocket
-  subscriptions: Map<string, (data: any) => void>
   private buffer: any[]
   private ready: boolean
 
   constructor() {
+    super()
     this.ready = false
     this.buffer = []
-    this.subscriptions = new Map()
     this.connect()
   }
 
@@ -18,15 +19,6 @@ class Server {
     } else {
       this.buffer.push(data)
     }
-  }
-
-  // Subscribe to messages for a given type
-  onmessage(type: string, callback: (data: any) => void) {
-    this.subscriptions.set(type, callback)
-  }
-
-  removeListener(type: string) {
-    this.subscriptions.delete(type)
   }
 
   connect() {
@@ -48,13 +40,11 @@ class Server {
 
     this.ws.onmessage = ({ data }) => {
       const { type, msg } = JSON.parse(data)
-
-      const sub = this.subscriptions.get(type)
-      if (sub) {
-        sub(msg)
-      }
+      this.emit(type, msg)
     }
   }
 }
 
-export default Server
+const server = new Server()
+
+export default server
