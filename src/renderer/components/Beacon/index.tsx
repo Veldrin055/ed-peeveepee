@@ -17,12 +17,13 @@ import IconButton from '@material-ui/core/IconButton'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
 
-interface BeaconProps {
+interface BeaconProps extends WithStyles<typeof styles> {
   beaconEnabled: boolean
   toggle: (enabled: boolean) => void
   beacons: BeaconMessage[]
   location: Coordinates
   iff: IFFRecord[]
+  gameMode: string
 }
 
 interface BeaconListItemProps extends WithStyles<typeof styles> {
@@ -59,6 +60,21 @@ const styles = (theme: Theme) =>
     close: {
       padding: theme.spacing(0.5),
     },
+    snackbar: {
+      backgroundColor: theme.palette.background.paper,
+      color: theme.palette.text.primary,
+    },
+    paper: {
+      width: '100%',
+      marginTop: theme.spacing(12),
+      overflowX: 'hidden',
+      height: '100%',
+      maxHeight: '59vh',
+      alignItems: 'centre',
+      '& p': {
+        paddingLeft: theme.spacing(12),
+      },
+    },
   })
 
 const distance = (loc1: Coordinates, loc2: Coordinates) =>
@@ -92,6 +108,7 @@ const BeaconListItem = withStyles(styles)(({ beaconMsg, distance, iff, classes }
       />
       <ListItemText primary={`${distance.toFixed(2)} LY`} />
       <Snackbar
+        className={classes.snackbar}
         anchorOrigin={{
           vertical: 'top',
           horizontal: 'center',
@@ -102,7 +119,7 @@ const BeaconListItem = withStyles(styles)(({ beaconMsg, distance, iff, classes }
         ContentProps={{
           'aria-describedby': 'message-id',
         }}
-        message={<Paper id="message-id">Star system copied to clipboard</Paper>}
+        message={<span id="message-id">Star system copied to clipboard</span>}
         action={[
           <IconButton key="close" aria-label="close" color="inherit" className={classes.close} onClick={handleClose}>
             <CloseIcon />
@@ -113,38 +130,49 @@ const BeaconListItem = withStyles(styles)(({ beaconMsg, distance, iff, classes }
   )
 })
 
-const Beacon = ({ beaconEnabled, toggle, beacons, location, iff }: BeaconProps) => {
-  const handleBeaconToggle = () => toggle(!beaconEnabled)
+const Beacon = withStyles(styles)(
+  ({ beaconEnabled, toggle, beacons, location, iff, gameMode, classes }: BeaconProps) => {
+    const handleBeaconToggle = () => toggle(!beaconEnabled)
 
-  return (
-    <div>
-      <FormControlLabel
-        control={<Switch checked={beaconEnabled} onChange={handleBeaconToggle} value="beaconEnabled" />}
-        label="Beacon"
-      />
-      <Paper>
-        {beaconEnabled && beacons && beacons.length ? (
-          <List>
-            {beacons
-              .map(beaconMsg => ({ beaconMsg, distance: distance(location, beaconMsg.location.position) }))
-              .sort((e1, e2) => e1.distance - e2.distance)
-              .map(({ beaconMsg, distance }, index) => (
-                <React.Fragment key={beaconMsg.cmdr}>
-                  <BeaconListItem
-                    {...{ beaconMsg, distance, iff: iff.find(record => record.name === beaconMsg.cmdr) }}
-                  />
-                  {index < beacons.length - 1 && <Divider variant="inset" component="li" />}
-                </React.Fragment>
-              ))}
-          </List>
-        ) : beaconEnabled ? (
-          <p>No CMDRs found broadcasting</p>
-        ) : (
-          <p>Turn on the beacon to find new friends</p>
-        )}
-      </Paper>
-    </div>
-  )
-}
+    return (
+      <div>
+        <FormControlLabel
+          control={
+            <Switch
+              checked={beaconEnabled}
+              onChange={handleBeaconToggle}
+              value="beaconEnabled"
+              disabled={gameMode !== 'Open'}
+            />
+          }
+          label="Beacon"
+        />
+        <Paper className={classes.paper}>
+          {gameMode !== 'Open' ? (
+            <p>Beacon's only for open brah.</p>
+          ) : beaconEnabled && beacons && beacons.length ? (
+            <List>
+              {beacons
+                .map(beaconMsg => ({ beaconMsg, distance: distance(location, beaconMsg.location.position) }))
+                .sort((e1, e2) => e1.distance - e2.distance)
+                .map(({ beaconMsg, distance }, index) => (
+                  <React.Fragment key={beaconMsg.cmdr}>
+                    <BeaconListItem
+                      {...{ beaconMsg, distance, iff: iff.find(record => record.name === beaconMsg.cmdr) }}
+                    />
+                    {index < beacons.length - 1 && <Divider variant="inset" component="li" />}
+                  </React.Fragment>
+                ))}
+            </List>
+          ) : beaconEnabled ? (
+            <p>No CMDRs found broadcasting</p>
+          ) : (
+            <p>Turn on the beacon to find new friends</p>
+          )}
+        </Paper>
+      </div>
+    )
+  }
+)
 
 export default Beacon

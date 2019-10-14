@@ -28,6 +28,7 @@ export interface CmdrState {
   name: string
   location: Location
   rank: CombatRank
+  gameMode: string
 }
 
 export interface Coordinates {
@@ -44,6 +45,7 @@ export interface Location {
 
 export interface LoadGameEvent {
   name: string
+  gameMode: string
 }
 
 export interface RankEvent {

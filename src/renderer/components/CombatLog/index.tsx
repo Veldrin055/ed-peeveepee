@@ -56,6 +56,9 @@ const useStyles = makeStyles((theme: Theme) =>
         transition: '0.3s',
       },
     },
+    nonFound: {
+      paddingLeft: theme.spacing(3),
+    },
   })
 )
 
@@ -95,7 +98,9 @@ const CombatLog: React.FunctionComponent<Props> = ({ combatLog, openDialog }) =>
           </TableBody>
         </Table>
       ) : (
-        <Typography variant="body1">No PvP events in your journal. Go blow somebody up!</Typography>
+        <Typography className={classes.nonFound} variant="body1">
+          No PvP events in your journal. Go blow somebody up!
+        </Typography>
       )}
     </Paper>
   )

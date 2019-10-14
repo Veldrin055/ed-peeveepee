@@ -6,6 +6,7 @@ import { CmdrStateAction, DEATH, KILL, LOAD_GAME, LOCATION_CHANGE, RANK } from '
 const defaultState: CmdrState = {
   name: 'The Unknown CMDR',
   rank: CombatRank.Harmless,
+  gameMode: '',
   totalKills: 0,
   totalDeaths: 0,
   location: {
@@ -27,7 +28,7 @@ export const cmdrStateReducer: Reducer<CmdrState, CmdrStateAction> = (
     case LOAD_GAME:
       return {
         ...state,
-        name: action.payload,
+        ...action.payload,
       }
     case KILL:
       return {

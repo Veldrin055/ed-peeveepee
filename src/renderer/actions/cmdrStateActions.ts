@@ -24,7 +24,12 @@ export interface LocationChangeAction extends Action {
 
 export interface LoadGameAction extends Action {
   type: 'LOAD_GAME'
-  payload: string
+  payload: LoadGamePayload
+}
+
+export interface LoadGamePayload {
+  name: string
+  gameMode: string
 }
 
 export interface RankAction extends Action {
@@ -47,7 +52,7 @@ export const locationChange: ActionCreator<LocationChangeAction> = (payload: Loc
   type: LOCATION_CHANGE,
 })
 
-export const loadGame: ActionCreator<LoadGameAction> = (payload: string) => ({
+export const loadGame: ActionCreator<LoadGameAction> = (payload: LoadGamePayload) => ({
   payload,
   type: LOAD_GAME,
 })

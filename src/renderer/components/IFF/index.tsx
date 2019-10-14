@@ -15,6 +15,7 @@ import IconButton from '@material-ui/core/IconButton'
 import Typography from '@material-ui/core/Typography'
 import { WithStyles } from '@material-ui/styles'
 import EditDialog from './EditDialog'
+import Paper from '@material-ui/core/Paper'
 
 interface IFFProps extends WithStyles<typeof styles> {
   iff: IFFRecord[]
@@ -52,7 +53,16 @@ const styles = (theme: Theme) =>
       color: theme.palette.primary.dark,
     },
     text: {
+      paddingLeft: theme.spacing(12),
       color: 'white',
+    },
+    paper: {
+      width: '100%',
+      marginTop: theme.spacing(12),
+      overflowX: 'hidden',
+      height: '100%',
+      maxHeight: '59vh',
+      alignItems: 'centre',
     },
   })
 
@@ -107,22 +117,24 @@ const Iff = withStyles(styles)(({ iff, add, del, classes }: IFFProps) => {
       <Button variant="contained" color="primary" onClick={openNew}>
         Add
       </Button>
-      {(!iff || !iff.length) && (
-        <Typography variant="body2" className={classes.text}>
-          {`Add the names of CMDRs that you want to be immediately notified about when you interact with them (scan, interdict).
-  
-        This can be useful to prevent accidentally targeting an ally, or if someone from your Kill On Sight list drops by!
-        Omit the 'CMDR' prefix when adding a new name. Names are checked case-insensitive.`}
-        </Typography>
-      )}
-      <List>
-        {iff.map((record, index) => (
-          <React.Fragment key={record.name}>
-            <IffListItem iff={record} del={del} edit={handleOpen} />
-            {index < iff.length - 1 && <Divider variant="inset" component="li" />}
-          </React.Fragment>
-        ))}
-      </List>
+      <Paper className={classes.paper}>
+        {(!iff || !iff.length) && (
+          <Typography variant="body2" className={classes.text}>
+            {`Add the names of CMDRs that you want to be immediately notified about when you interact with them (scan, interdict).
+    
+          This can be useful to prevent accidentally targeting an ally, or if someone from your Kill On Sight list drops by!
+          Omit the 'CMDR' prefix when adding a new name. Names are checked case-insensitive.`}
+          </Typography>
+        )}
+        <List>
+          {iff.map((record, index) => (
+            <React.Fragment key={record.name}>
+              <IffListItem iff={record} del={del} edit={handleOpen} />
+              {index < iff.length - 1 && <Divider variant="inset" component="li" />}
+            </React.Fragment>
+          ))}
+        </List>
+      </Paper>
     </div>
   )
 })

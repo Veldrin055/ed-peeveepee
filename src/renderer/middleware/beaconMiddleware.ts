@@ -27,6 +27,8 @@ export const beaconMiddleware: Middleware = store => {
       const { payload } = action as BeaconToggleAction
       if (payload) {
         sendLocationUpdate(store.getState().cmdr.location)
+      } else {
+        server.send({ type: 'beacon_remove', msg: {} })
       }
     }
 

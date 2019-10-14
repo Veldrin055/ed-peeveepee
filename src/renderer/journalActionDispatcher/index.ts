@@ -8,7 +8,7 @@ import { setSettings } from '../actions/settingsActions'
 import { SettingsState } from '../reducers/settingsReducer'
 
 export default ({ dispatch }: Store) => {
-  ipcRenderer.on('loadGame', (event: any, { name }: LoadGameEvent) => dispatch(loadGame(name)))
+  ipcRenderer.on('loadGame', (event: any, payload: LoadGameEvent) => dispatch(loadGame({ ...payload })))
 
   ipcRenderer.on('rank', (event: any, { combatRank }: RankEvent) => dispatch(rank(combatRank)))
 

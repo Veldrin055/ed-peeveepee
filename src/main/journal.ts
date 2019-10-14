@@ -1,6 +1,6 @@
 import { Journal } from 'edjr'
 import { BrowserWindow } from 'electron'
-import { CombatRanks, Killer, KillEvent, Location, PvpEventType, CombatRank } from '../common/types'
+import { CombatRank, CombatRanks, Killer, KillEvent, Location, PvpEventType } from '../common/types'
 
 interface JournalEvent {
   readonly timestamp: Date
@@ -53,9 +53,10 @@ export default ({ webContents }: BrowserWindow) => {
   // location update
   journal.on('Location', (e: LocationEvent, historical) => locationUpdate(e, historical))
   journal.on('FSDJump', (e: LocationEvent, historical) => locationUpdate(e, historical))
+  journal.on('SupercruiseExit', (e: LocationEvent, historical) => locationUpdate(e, historical))
 
   // load game
-  journal.on('LoadGame', ({ Commander }) => webContents.send('loadGame', { name: Commander }))
+  journal.on('LoadGame', ({ Commander, GameMode }) => webContents.send('loadGame', { name: Commander, mode: GameMode }))
   journal.on('NewCommander', ({ Name }) => webContents.send('loadGame', { name: Name }))
 
   // ranks

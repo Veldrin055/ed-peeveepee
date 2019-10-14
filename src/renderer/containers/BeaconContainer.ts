@@ -9,6 +9,7 @@ const mapStateToProps = ({ beacon, cmdr, iff }: RootState) => ({
   beacons: beacon.beacons,
   iff: iff.iff,
   location: cmdr.location.position,
+  gameMode: cmdr.gameMode,
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
