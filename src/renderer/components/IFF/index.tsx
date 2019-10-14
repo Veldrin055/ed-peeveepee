@@ -54,31 +54,15 @@ const styles = (theme: Theme) =>
     text: {
       color: 'white',
     },
-    hover: {
-      position: 'relative',
-
-      '&:hover &__no-hover': {
-        opacity: 0,
-      },
-      '&:hover &__hover': {
-        opacity: 1,
-      },
-      '&__hover': {
-        position: 'absolute',
-        top: 0,
-        opacity: 0,
-      },
-      '&__no-hover': {
-        opacity: 1,
-      },
-    },
   })
 
 const IffListItem = withStyles(styles)(({ iff, del, edit, classes }: IFFListItemProps) => {
   const handleEdit = () => edit(iff)
+
   const handleDel = () => del(iff.name)
+
   return (
-    <ListItem component="div" className={classes.hover}>
+    <ListItem component="div">
       <ListItemIcon>
         {(iff.label === IFFLabel.ally && <Favorite className={classes.favourite} />) ||
           (iff.label === IFFLabel.enemy && <Target className={classes.enemy} />) || (

@@ -2,17 +2,17 @@ import { combineReducers } from 'redux'
 
 import { combatLogReducer, CombatLogState } from './combatLogReducer'
 import { cmdrStateReducer } from './cmdrStateReducer'
-import { BeaconMessage, CmdrState } from '../../common/types'
+import { CmdrState } from '../../common/types'
 import { iffReducer, IffState } from './iffReducer'
 import { settingsReducer, SettingsState } from './settingsReducer'
-import { beaconReducer } from './beaconReducer'
+import { beaconReducer, BeaconState } from './beaconReducer'
 
 export interface RootState {
   combatLog: CombatLogState
   cmdr: CmdrState
   iff: IffState
   settings: SettingsState
-  beacons: BeaconMessage[]
+  beacon: BeaconState
 }
 
 export const rootReducer = combineReducers<RootState | undefined>({
@@ -20,5 +20,5 @@ export const rootReducer = combineReducers<RootState | undefined>({
   cmdr: cmdrStateReducer,
   iff: iffReducer,
   settings: settingsReducer,
-  beacons: beaconReducer,
+  beacon: beaconReducer,
 })
