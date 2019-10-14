@@ -53,10 +53,15 @@ export default ({ webContents }: BrowserWindow) => {
   // location update
   journal.on('Location', (e: LocationEvent, historical) => locationUpdate(e, historical))
   journal.on('FSDJump', (e: LocationEvent, historical) => locationUpdate(e, historical))
-  journal.on('SupercruiseExit', (e: LocationEvent, historical) => locationUpdate(e, historical))
+  journal.on('SupercruiseExit', ({ StarSystem, Body, timestamp, event }: LocationEvent, historical) => {
+    const StarPos = [currentLocation.position.x, currentLocation.position.y, currentLocation.position.z]
+    locationUpdate({ event, StarSystem, Body, StarPos, timestamp }, historical)
+  })
 
   // load game
-  journal.on('LoadGame', ({ Commander, GameMode }) => webContents.send('loadGame', { name: Commander, mode: GameMode }))
+  journal.on('LoadGame', ({ Commander, GameMode }) =>
+    webContents.send('loadGame', { name: Commander, gameMode: GameMode })
+  )
   journal.on('NewCommander', ({ Name }) => webContents.send('loadGame', { name: Name }))
 
   // ranks
