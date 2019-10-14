@@ -97,12 +97,12 @@ const BeaconListItem = withStyles(styles)(({ beaconMsg, distance, iff, classes }
           horizontal: 'center',
         }}
         open={open}
-        autoHideDuration={6000}
+        autoHideDuration={3000}
         onClose={handleClose}
         ContentProps={{
           'aria-describedby': 'message-id',
         }}
-        message={<span id="message-id">Note archived</span>}
+        message={<Paper id="message-id">Star system copied to clipboard</Paper>}
         action={[
           <IconButton key="close" aria-label="close" color="inherit" className={classes.close} onClick={handleClose}>
             <CloseIcon />
@@ -123,7 +123,7 @@ const Beacon = ({ beaconEnabled, toggle, beacons, location, iff }: BeaconProps) 
         label="Beacon"
       />
       <Paper>
-        {beacons && beacons.length ? (
+        {beaconEnabled && beacons && beacons.length ? (
           <List>
             {beacons
               .map(beaconMsg => ({ beaconMsg, distance: distance(location, beaconMsg.location.position) }))
