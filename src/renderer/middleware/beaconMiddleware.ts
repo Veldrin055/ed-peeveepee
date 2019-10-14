@@ -19,7 +19,7 @@ export const beaconMiddleware: Middleware = store => {
 
   return next => action => {
     if (action.type === LOCATION_CHANGE) {
-      if (store.getState().beacons.beaconEnabled) {
+      if (store.getState().beacon.enabled) {
         const { payload } = action as LocationChangeAction
         sendLocationUpdate({ ...payload })
       }
