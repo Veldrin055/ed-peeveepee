@@ -5,9 +5,8 @@ import { BEACON_TOGGLE, beaconAdd, beaconRemove, BeaconToggleAction } from '../a
 import server from '../server'
 
 export const beaconMiddleware: Middleware = store => {
-  const handleBeaconAdd = (msg: any) => store.dispatch(beaconAdd(msg))
-
-  const handleBeaconRemove = (msg: any) => store.dispatch(beaconRemove(msg))
+  server.on('beacon', msg => store.dispatch(beaconAdd(msg)))
+  server.on('beacon_remove', msg => store.dispatch(beaconRemove(msg)))
 
   const sendLocationUpdate = (location: Location) => {
     const msg = {
@@ -20,17 +19,14 @@ export const beaconMiddleware: Middleware = store => {
 
   return next => action => {
     if (action.type === LOCATION_CHANGE) {
-      const { payload } = action as LocationChangeAction
-      sendLocationUpdate({ ...payload })
+      if (store.getState().beacons.beaconEnabled) {
+        const { payload } = action as LocationChangeAction
+        sendLocationUpdate({ ...payload })
+      }
     } else if (action.type === BEACON_TOGGLE) {
       const { payload } = action as BeaconToggleAction
       if (payload) {
-        server.on('beacon', msg => store.dispatch(beaconAdd(msg)))
-        server.on('beacon_remove', msg => store.dispatch(beaconRemove(msg)))
         sendLocationUpdate(store.getState().cmdr.location)
-      } else {
-        server.removeListener('beacon', handleBeaconAdd)
-        server.removeListener('beacon', handleBeaconRemove)
       }
     }
 
