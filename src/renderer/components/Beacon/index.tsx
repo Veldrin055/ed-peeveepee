@@ -34,6 +34,19 @@ interface BeaconListItemProps extends WithStyles<typeof styles> {
 
 const styles = (theme: Theme) =>
   createStyles({
+    '@global': {
+      '*::-webkit-scrollbar': {
+        width: '0.8em',
+      },
+      '*::-webkit-scrollbar-track': {
+        '-webkit-box-shadow': 'inset 0 0 6px rgba(0,0,0,0.00)',
+      },
+      '*::-webkit-scrollbar-thumb': {
+        backgroundColor: 'rgba(0,0,0,.3)',
+        outline: '1px solid slategrey',
+        borderRadius: 6,
+      },
+    },
     root: {
       margin: 0,
       padding: theme.spacing(3),
@@ -69,7 +82,7 @@ const styles = (theme: Theme) =>
       marginTop: theme.spacing(12),
       overflowX: 'hidden',
       height: '100%',
-      maxHeight: '59vh',
+      maxHeight: '76vh',
       alignItems: 'centre',
       '& p': {
         paddingLeft: theme.spacing(12),
