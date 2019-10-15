@@ -3,7 +3,7 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
 import { CmdrState } from '../../../common/types'
-import { Typography } from '@material-ui/core'
+import { Typography, Chip } from '@material-ui/core'
 import CombatLog from '../../containers/CombatLogContainer'
 import { locationDisplay } from '../../util'
 
@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme: Theme) =>
       borderRadius: 6,
     },
     spacer: {
-      height: 48,
+      height: 40,
       width: '100%',
     },
   })
@@ -67,14 +67,21 @@ const Cmdr: React.FunctionComponent<Props> = ({ cmdr }) => {
           </Typography>
           <Paper className={classes.paper}>
             <Grid container={true}>
-              <Grid item xs={6}>
+              <Grid item xs={4}>
                 <Typography variant="body1">CMDR {cmdr.name}</Typography>
               </Grid>
-              <Grid item xs={6}>
-                <Typography variant="body1">Rank {cmdr.rank}</Typography>
+              <Grid item xs={4}>
+                <Typography variant="body1">{cmdr.rank}</Typography>
+              </Grid>
+              <Grid item xs={4}>
+                <Chip
+                  label={cmdr.gameMode}
+                  variant="outlined"
+                  color={cmdr.gameMode === 'Open' ? 'primary' : 'secondary'}
+                />
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body1">Location {locationDisplay(cmdr.location)}</Typography>
+                <Typography variant="body1">{locationDisplay(cmdr.location)}</Typography>
               </Grid>
               <Grid item xs={4}>
                 <Typography variant="body1">KDR {kdr(cmdr)}</Typography>

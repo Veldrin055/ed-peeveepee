@@ -62,6 +62,7 @@ export default ({ webContents }: BrowserWindow) => {
   journal.on('LoadGame', ({ Commander, GameMode }) =>
     webContents.send('loadGame', { name: Commander, gameMode: GameMode })
   )
+  journal.on('Shutdown', () => webContents.send('loadGame', { gameMode: 'Offline' }))
   journal.on('NewCommander', ({ Name }) => webContents.send('loadGame', { name: Name }))
 
   // ranks
