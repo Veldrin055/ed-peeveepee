@@ -5,6 +5,7 @@ import journal from './journal'
 import iffStore from './iff'
 import settings from './settings'
 import { Journal } from 'edjr'
+import autoUpdate from './autoUpdate'
 
 let win: BrowserWindow | null
 let jrnl: Journal
@@ -35,6 +36,7 @@ const createWindow = async () => {
   jrnl = journal(win)
   iffStore(jrnl, win)
   settings(win)
+  autoUpdate(win)
 
   if (process.env.NODE_ENV !== 'production') {
     process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = '1'
@@ -60,6 +62,7 @@ const createWindow = async () => {
     win = null
   })
 }
+
 app.setAppUserModelId(process.execPath) // todo dev?
 app.on('ready', createWindow)
 
