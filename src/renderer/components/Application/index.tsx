@@ -8,6 +8,7 @@ import IFF from '../../containers/IffContainer'
 import Beacon from '../../containers/BeaconContainer'
 import Loading from './Loading'
 import { Typography } from '@material-ui/core'
+import Update from './Update'
 
 interface PageProps {
   children?: React.ReactNode
@@ -35,6 +36,7 @@ const Application = ({ ready = false }: ApplicationProps) => {
       <div style={{ maxHeight: '100vh' }}>
         {ready ? (
           <div>
+            <Update />
             <NavBar value={value} handleChange={handleChange} />
             {value === 0 && (
               <Page>
